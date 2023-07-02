@@ -12,12 +12,18 @@
     "sources": "https://github.com/Hirtol/multi-hotbar-fabric",
     "repo": "https://github.com/Hirtol/multi-hotbar-fabric"
   },
-  "license": "Insert License Here",
+  "license": "MIT",
   "icon": "assets/actualmultiplehotbars/icon.png",
   "environment": "*",
   "entrypoints": {
+    "client": [
+      "top.hirtol.actualmultiplehotbars.fabric.ActualHotbarsFabricClient"
+    ],
     "main": [
       "top.hirtol.actualmultiplehotbars.fabric.ActualHotbarsFabric"
+    ],
+    "modmenu": [
+      "top.hirtol.actualmultiplehotbars.fabric.ModMenuIntegration"
     ]
   },
   "mixins": [

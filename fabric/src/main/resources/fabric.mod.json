@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "actualmultiplehotbars",
+  "version": "${version}",
+  "name": "Actual Multiple Hotbars",
+  "description": "Add Factorio like hotbars (with their own inventory)",
+  "authors": [
+    "Hirtol"
+  ],
+  "contact": {
+    "homepage": "https://fabricmc.net/",
+    "sources": "https://github.com/Hirtol/multi-hotbar-fabric",
+    "repo": "https://github.com/Hirtol/multi-hotbar-fabric"
+  },
+  "license": "Insert License Here",
+  "icon": "assets/actualmultiplehotbars/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "top.hirtol.actualmultiplehotbars.fabric.ExampleModFabric"
+    ]
+  },
+  "mixins": [
+    "actualmultiplehotbars.mixins.json",
+    "actualmultiplehotbars-common.mixins.json"
+  ],
+  "depends": {
+    "fabric": "*",
+    "minecraft": ">=1.19",
+    "architectury": ">=5.14.76"
+  }
+}

@@ -1,0 +1,35 @@
+modLoader = "javafml"
+loaderVersion = "[41,)"
+#issueTrackerURL = ""
+license = "MIT"
+
+[[mods]]
+modId = "actualmultiplehotbars"
+version = "${version}"
+displayName = "Actual Multiple Hotbars"
+authors = "Hirtol"
+description = '''
+Add Factorio like hotbars (with their own inventory)
+'''
+#logoFile = ""
+
+[[dependencies.actualmultiplehotbars]]
+modId = "forge"
+mandatory = true
+versionRange = "[41,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.actualmultiplehotbars]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.19,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.actualmultiplehotbars]]
+modId = "architectury"
+mandatory = true
+versionRange = "[5.14.76,)"
+ordering = "AFTER"
+side = "BOTH"

@@ -4,7 +4,7 @@
   "key.actualmultiplehotbars.openui": "Open Hotbars UI",
   "screen.actualmultiplehotbars.ui.title": "Additional Hotbars",
 
-  "text.autoconfig.actualmultiplehotbars.category.default":"General",
+  "text.autoconfig.actualmultiplehotbars.category.default":"Client Settings",
   "text.autoconfig.actualmultiplehotbars.category.Server":"(Integrated) Server Settings",
   "text.autoconfig.actualmultiplehotbars.option.serverSettings.additionalHotbars":"Additional Hotbars",
   "text.autoconfig.actualmultiplehotbars.option.serverSettings.allowFillingAdditional":"Allow Filling Additional Hotbar",

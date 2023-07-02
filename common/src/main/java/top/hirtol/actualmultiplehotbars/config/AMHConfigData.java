@@ -22,7 +22,6 @@ public class AMHConfigData implements ConfigData {
   @ConfigEntry.Gui.TransitiveObject
   public ServerSettings serverSettings = new ServerSettings();
 
-  @ConfigEntry.Category("Client")
   @ConfigEntry.Gui.TransitiveObject
   public ClientSettings client = new ClientSettings();
 

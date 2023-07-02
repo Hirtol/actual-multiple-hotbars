@@ -1,11 +1,11 @@
 package top.hirtol.actualmultiplehotbars.fabric;
 
-import top.hirtol.actualmultiplehotbars.ExampleMod;
+import top.hirtol.actualmultiplehotbars.ActualHotbars;
 import net.fabricmc.api.ModInitializer;
 
-public class ExampleModFabric implements ModInitializer {
+public class ActualHotbarsFabric implements ModInitializer {
     @Override
     public void onInitialize() {
-        ExampleMod.init();
+        ActualHotbars.init();
     }
 }

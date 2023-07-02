@@ -1,15 +1,15 @@
 package top.hirtol.actualmultiplehotbars.forge;
 
 import dev.architectury.platform.forge.EventBuses;
-import top.hirtol.actualmultiplehotbars.ExampleMod;
+import top.hirtol.actualmultiplehotbars.ActualHotbars;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
-@Mod(ExampleMod.MOD_ID)
-public class ExampleModForge {
-    public ExampleModForge() {
+@Mod(ActualHotbars.MOD_ID)
+public class ActualHotbarsForge {
+    public ActualHotbarsForge() {
         // Submit our event bus to let architectury register our content on the right time
-        EventBuses.registerModEventBus(ExampleMod.MOD_ID, FMLJavaModLoadingContext.get().getModEventBus());
-        ExampleMod.init();
+        EventBuses.registerModEventBus(ActualHotbars.MOD_ID, FMLJavaModLoadingContext.get().getModEventBus());
+        ActualHotbars.init();
     }
 }

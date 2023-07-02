@@ -1,13 +1,13 @@
 package top.hirtol.actualmultiplehotbars.fabric;
 
-import top.hirtol.actualmultiplehotbars.ExampleExpectPlatform;
+import top.hirtol.actualmultiplehotbars.ActualExpectPlatform;
 import net.fabricmc.loader.api.FabricLoader;
 
 import java.nio.file.Path;
 
-public class ExampleExpectPlatformImpl {
+public class ActualExpectPlatformImpl {
     /**
-     * This is our actual method to {@link ExampleExpectPlatform#getConfigDirectory()}.
+     * This is our actual method to {@link ActualExpectPlatform#getConfigDirectory()}.
      */
     public static Path getConfigDirectory() {
         return FabricLoader.getInstance().getConfigDir();

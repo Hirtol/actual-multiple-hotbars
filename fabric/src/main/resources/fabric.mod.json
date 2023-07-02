@@ -17,7 +17,7 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "top.hirtol.actualmultiplehotbars.fabric.ExampleModFabric"
+      "top.hirtol.actualmultiplehotbars.fabric.ActualHotbarsFabric"
     ]
   },
   "mixins": [

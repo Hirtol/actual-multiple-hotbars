@@ -37,7 +37,7 @@ public class HotbarInventory extends PartialHotbarInventory {
   public void openHandledScreen(PlayerEntity player) {
     if (!player.world.isClient) {
       var newScreen =
-          new SimpleNamedScreenHandlerFactory((syncId, inv, openPlayer) -> ScreenHandlers.createScreen(syncId, inv, this), Text.translatable("screen.multi-hotbar-fabric.ui.title"));
+          new SimpleNamedScreenHandlerFactory((syncId, inv, openPlayer) -> ScreenHandlers.createScreen(syncId, inv, this), Text.translatable("screen.actualmultiplehotbars.ui.title"));
 
       player.openHandledScreen(newScreen);
     }

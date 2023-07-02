@@ -12,10 +12,10 @@ import top.hirtol.actualmultiplehotbars.networking.packets.OpenInvC2SPacket;
 public class KeyManager {
 
   private static final Logger logger = LoggerFactory.getLogger(KeyManager.class);
-  public static KeyBinding rotateKey = new KeyBinding("key.multi-hotbar-fabric.swap", Type.KEYSYM,
-      GLFW.GLFW_KEY_X, "category.multi-hotbar-fabric.keybinds");
-  public static KeyBinding openHotbarKey = new KeyBinding("key.multi-hotbar-fabric.openui", Type.KEYSYM,
-      GLFW.GLFW_KEY_V, "category.multi-hotbar-fabric.keybinds");
+  public static KeyBinding rotateKey = new KeyBinding("key.actualmultiplehotbars.swap", Type.KEYSYM,
+      GLFW.GLFW_KEY_X, "category.actualmultiplehotbars.keybinds");
+  public static KeyBinding openHotbarKey = new KeyBinding("key.actualmultiplehotbars.openui", Type.KEYSYM,
+      GLFW.GLFW_KEY_V, "category.actualmultiplehotbars.keybinds");
 
   public static void initialise() {
     KeyMappingRegistry.register(rotateKey);

@@ -1,12 +1,9 @@
-package top.hirtol.actualmultiplehotbars.fabric;
+package top.hirtol.actualmultiplehotbars;
 
 import net.fabricmc.api.ModInitializer;
-import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.registry.Registry;
-import top.hirtol.actualmultiplehotbars.ActualHotbars;
-import top.hirtol.actualmultiplehotbars.fabric.screenhandlers.HotbarScreen;
-import top.hirtol.actualmultiplehotbars.fabric.screenhandlers.HotbarScreenHandler;
+import top.hirtol.actualmultiplehotbars.screenhandlers.HotbarScreenHandler;
 
 public class ActualHotbarsFabric implements ModInitializer {
 

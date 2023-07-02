@@ -1,4 +1,4 @@
-package top.hirtol.actualmultiplehotbars;
+package top.hirtol.actualmultiplehotbars.screenhandlers;
 
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.entity.player.PlayerInventory;

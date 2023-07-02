@@ -8,7 +8,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import top.hirtol.actualmultiplehotbars.ServerState;
 import top.hirtol.actualmultiplehotbars.networking.packets.HotbarInvS2CPacket;
-import top.hirtol.actualmultiplehotbars.ScreenHandlers;
+import top.hirtol.actualmultiplehotbars.screenhandlers.ScreenHandlers;
 
 public class HotbarInventory extends PartialHotbarInventory {
 

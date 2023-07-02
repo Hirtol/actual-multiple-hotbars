@@ -1,4 +1,4 @@
-package top.hirtol.actualmultiplehotbars.fabric;
+package top.hirtol.actualmultiplehotbars;
 
 import top.hirtol.actualmultiplehotbars.ActualExpectPlatform;
 import net.fabricmc.loader.api.FabricLoader;

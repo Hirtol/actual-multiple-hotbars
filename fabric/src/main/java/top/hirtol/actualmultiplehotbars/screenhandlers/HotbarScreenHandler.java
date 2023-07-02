@@ -1,4 +1,4 @@
-package top.hirtol.actualmultiplehotbars.fabric.screenhandlers;
+package top.hirtol.actualmultiplehotbars.screenhandlers;
 
 import io.github.cottonmc.cotton.gui.SyncedGuiDescription;
 import io.github.cottonmc.cotton.gui.widget.WItemSlot;
@@ -9,8 +9,7 @@ import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import top.hirtol.actualmultiplehotbars.ActualHotbars;
-import top.hirtol.actualmultiplehotbars.ActualHotbars;
-import top.hirtol.actualmultiplehotbars.fabric.ActualHotbarsFabric;
+import top.hirtol.actualmultiplehotbars.ActualHotbarsFabric;
 import top.hirtol.actualmultiplehotbars.inventory.PartialHotbarInventory;
 
 public class HotbarScreenHandler extends SyncedGuiDescription {

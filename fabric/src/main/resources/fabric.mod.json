@@ -17,13 +17,13 @@
   "environment": "*",
   "entrypoints": {
     "client": [
-      "top.hirtol.actualmultiplehotbars.fabric.ActualHotbarsFabricClient"
+      "top.hirtol.actualmultiplehotbars.ActualHotbarsFabricClient"
     ],
     "main": [
-      "top.hirtol.actualmultiplehotbars.fabric.ActualHotbarsFabric"
+      "top.hirtol.actualmultiplehotbars.ActualHotbarsFabric"
     ],
     "modmenu": [
-      "top.hirtol.actualmultiplehotbars.fabric.ModMenuIntegration"
+      "top.hirtol.actualmultiplehotbars.ModMenuIntegration"
     ]
   },
   "mixins": [

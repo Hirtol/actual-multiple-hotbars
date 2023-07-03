@@ -58,15 +58,15 @@ public abstract class PlayerInventoryMixin {
 
   @Inject(method = "updateItems", at = @At(value = "HEAD"))
   private void updateHotbarItems(CallbackInfo ci) {
-//    var hotbar = ServerState.getPlayerState(player);
-//
-//    if (hotbar != null) {
-//      for (int i = 0; i < hotbar.getItems().size(); ++i) {
-//        if (hotbar.getStack(i).isEmpty()) {
-//          continue;
-//        }
-//        hotbar.getStack(i).inventoryTick(this.player.world, this.player, i, false);
-//      }
-//    }
+    HotbarInventory hotbar = ServerState.getPlayerState(player);
+
+    if (hotbar != null) {
+      for (int i = 0; i < hotbar.getItems().size(); ++i) {
+        if (hotbar.getStack(i).isEmpty()) {
+          continue;
+        }
+        hotbar.getStack(i).inventoryTick(this.player.world, this.player, i, false);
+      }
+    }
   }
 }

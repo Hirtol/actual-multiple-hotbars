@@ -5,6 +5,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.screen.SimpleNamedScreenHandlerFactory;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.collection.DefaultedList;
 import top.hirtol.actualmultiplehotbars.ServerState;
 import top.hirtol.actualmultiplehotbars.networking.packets.HotbarInvS2CPacket;
@@ -37,7 +38,7 @@ public class HotbarInventory extends PartialHotbarInventory {
   public void openHandledScreen(PlayerEntity player) {
     if (!player.world.isClient) {
       var newScreen =
-          new SimpleNamedScreenHandlerFactory((syncId, inv, openPlayer) -> ScreenHandlers.createScreen(syncId, inv, this), Text.translatable("screen.actualmultiplehotbars.ui.title"));
+          new SimpleNamedScreenHandlerFactory((syncId, inv, openPlayer) -> ScreenHandlers.createScreen(syncId, inv, this), new TranslatableText("screen.actualmultiplehotbars.ui.title"));
 
       player.openHandledScreen(newScreen);
     }

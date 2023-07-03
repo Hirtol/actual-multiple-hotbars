@@ -3,7 +3,6 @@ package top.hirtol.actualmultiplehotbars.screenhandlers.fabric;
 import io.github.cottonmc.cotton.gui.SyncedGuiDescription;
 import io.github.cottonmc.cotton.gui.widget.WItemSlot;
 import io.github.cottonmc.cotton.gui.widget.WPlainPanel;
-import io.github.cottonmc.cotton.gui.widget.data.Insets;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
@@ -45,7 +44,8 @@ public class HotbarScreenHandler extends SyncedGuiDescription {
     }
 
     // Sets the correct GUI Size
-    root.setInsets(Insets.ROOT_PANEL);
+
+//    root.setInsets(Insets.ROOT_PANEL);
 
     int height = 15;
     height += 18 * (3);

@@ -1,6 +1,7 @@
 package top.hirtol.actualmultiplehotbars.fabric;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.registry.Registry;
 import top.hirtol.actualmultiplehotbars.ActualHotbars;
@@ -15,6 +16,6 @@ public class ActualHotbarsFabric implements ModInitializer {
     ActualHotbars.init();
 
     HOTBAR_SCREEN =
-        Registry.register(Registry.SCREEN_HANDLER, HotbarScreenHandler.HOTBAR_SCREEN_ID, new ScreenHandlerType<>(HotbarScreenHandler::new));
+        ScreenHandlerRegistry.registerSimple(HotbarScreenHandler.HOTBAR_SCREEN_ID, HotbarScreenHandler::new);
   }
 }

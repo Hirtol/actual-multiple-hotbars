@@ -56,7 +56,7 @@ public class HotbarScreen extends GenericContainerScreen {
 
       if(playerEntity != null)
       {
-        this.close();
+        this.onClose();
       }
       return true;
     }

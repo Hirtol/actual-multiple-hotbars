@@ -1,8 +1,8 @@
 package top.hirtol.actualmultiplehotbars.networking;
 
-import dev.architectury.networking.NetworkManager;
-import dev.architectury.networking.NetworkManager.Side;
 import java.util.function.Function;
+import me.shedaniel.architectury.networking.NetworkManager;
+import me.shedaniel.architectury.networking.NetworkManager.Side;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;

@@ -22,7 +22,7 @@ public class HotbarScreen extends CottonInventoryScreen<HotbarScreenHandler> {
 
       if(playerEntity != null)
       {
-        this.close();
+        this.onClose();
       }
       return true;
     }

@@ -18,6 +18,21 @@ public class ServerState extends PersistentState {
   public HashMap<UUID, PartialHotbarInventory> players = new HashMap<>();
   private static final HashMap<UUID, Boolean> MODDED_PLAYERS = new HashMap<>();
 
+  public ServerState() {
+    super("players");
+  }
+
+  @Override
+  public void fromTag(NbtCompound tag) {
+    NbtCompound playersTag = tag.getCompound("players");
+    playersTag.getKeys().forEach(key -> {
+      PartialHotbarInventory playerState = PartialHotbarInventory.fromNbt(playersTag.getCompound(key));
+
+      UUID uuid = UUID.fromString(key);
+      this.players.put(uuid, playerState);
+    });
+  }
+
   @Override
   public NbtCompound writeNbt(NbtCompound nbt) {
     // Putting the 'players' hashmap, into the 'nbt' which will be saved.
@@ -38,7 +53,6 @@ public class ServerState extends PersistentState {
     PersistentStateManager persistentStateManager = server.getWorld(World.OVERWORLD).getPersistentStateManager();
 
     return persistentStateManager.getOrCreate(
-        ServerState::createFromNbt,
         ServerState::new,
         ActualHotbars.MOD_ID);
   }
@@ -46,13 +60,7 @@ public class ServerState extends PersistentState {
   public static ServerState createFromNbt(NbtCompound tag) {
     ServerState serverState = new ServerState();
 
-    NbtCompound playersTag = tag.getCompound("players");
-    playersTag.getKeys().forEach(key -> {
-      PartialHotbarInventory playerState = PartialHotbarInventory.fromNbt(playersTag.getCompound(key));
-
-      UUID uuid = UUID.fromString(key);
-      serverState.players.put(uuid, playerState);
-    });
+    serverState.fromTag(tag);
 
     return serverState;
   }

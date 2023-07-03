@@ -12,7 +12,7 @@ import top.hirtol.actualmultiplehotbars.networking.S2CPacket;
 
 public class SyncS2CConfigPacket implements S2CPacket {
 
-  public static final Identifier ID = Identifier.of(ActualHotbars.MOD_ID, "config_sync");
+  public static final Identifier ID = new Identifier(ActualHotbars.MOD_ID, "config_sync");
   private static final Logger logger = LoggerFactory.getLogger(SyncS2CConfigPacket.class);
 
   private final ServerSettings config;
@@ -46,6 +46,6 @@ public class SyncS2CConfigPacket implements S2CPacket {
 
   @Override
   public void handle(MinecraftClient client) {
-    client.executeSync(() -> Config.getInstance().setRemoteSettings(this.config));
+    client.execute(() -> Config.getInstance().setRemoteSettings(this.config));
   }
 }

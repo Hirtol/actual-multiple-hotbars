@@ -1,6 +1,6 @@
 package top.hirtol.actualmultiplehotbars;
 
-import dev.architectury.event.events.common.PlayerEvent;
+import me.shedaniel.architectury.event.events.PlayerEvent;
 import net.minecraft.util.ActionResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -32,8 +32,7 @@ public abstract class InGameHudMixin extends DrawableHelper {
   protected abstract PlayerEntity getCameraPlayer();
 
   @Shadow
-  protected abstract void renderHotbarItem(int x, int y, float tickDelta, PlayerEntity player, ItemStack stack,
-      int seed);
+  protected abstract void renderHotbarItem(int x, int y, float tickDelta, PlayerEntity player, ItemStack stack);
 
   @Inject(method = "renderHotbar", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;drawTexture(Lnet/minecraft/client/util/math/MatrixStack;IIIIII)V", ordinal = 0))
   private void renderHotbarFrame(float tickDelta, MatrixStack matrices, CallbackInfo info) {
@@ -47,21 +46,6 @@ public abstract class InGameHudMixin extends DrawableHelper {
 
     this.onScreen = true;
   }
-
-//  @Inject(method = "renderHotbar", at = @At(value = "HEAD"))
-//  private void startRenderScaledUi(float tickDelta, MatrixStack matrices, CallbackInfo ci) {
-//    matrices.push();
-//    matrices.scale(0.83f, 0.83f, 1.0f);
-//    this.scaledWidth *= 1.2;
-//    this.scaledHeight *= 1.2;
-//  }
-//
-//  @Inject(method = "renderHotbar", at = @At(value = "RETURN"))
-//  private void endRenderScaledUi(float tickDelta, MatrixStack matrices, CallbackInfo ci) {
-//    matrices.pop();
-//    this.scaledWidth /= 1.2;
-//    this.scaledHeight /= 1.2;
-//  }
 
   @Inject(method = "renderHotbar", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;drawTexture(Lnet/minecraft/client/util/math/MatrixStack;IIIIII)V", ordinal = 1))
   private void shiftHotbarSelector(float tickDelta, MatrixStack matrices, CallbackInfo info) {
@@ -96,7 +80,6 @@ public abstract class InGameHudMixin extends DrawableHelper {
     }
 
     for (int hotbarI = 0; hotbarI < settings.numberOfAdditionalVisibleHotbars; hotbarI++) {
-      int m = 1;
       for (int slotI = 0; slotI < 9; ++slotI) {
         int o = this.scaledWidth / 2 - 90 + slotI * 20 + 2;
         int shift = (settings.shift * (settings.reverseBars ? settings.numberOfAdditionalVisibleHotbars - (hotbarI + 1): hotbarI + 1));
@@ -104,7 +87,7 @@ public abstract class InGameHudMixin extends DrawableHelper {
             this.scaledHeight - 16 - 3 - shift;
         int rowStart = hotbarI * 9;
         ItemStack item = MultiClientState.getInstance().getProvider().getItem(rowStart + slotI);
-        this.renderHotbarItem(o, p, tickDelta, getCameraPlayer(), item, m++);
+        this.renderHotbarItem(o, p, tickDelta, getCameraPlayer(), item);
       }
     }
   }

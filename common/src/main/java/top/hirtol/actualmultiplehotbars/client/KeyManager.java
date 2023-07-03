@@ -1,7 +1,7 @@
 package top.hirtol.actualmultiplehotbars.client;
 
-import dev.architectury.event.events.client.ClientTickEvent;
-import dev.architectury.registry.client.keymappings.KeyMappingRegistry;
+import me.shedaniel.architectury.event.events.client.ClientTickEvent;
+import me.shedaniel.architectury.registry.KeyBindings;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil.Type;
 import org.lwjgl.glfw.GLFW;
@@ -18,8 +18,8 @@ public class KeyManager {
       GLFW.GLFW_KEY_V, "category.actualmultiplehotbars.keybinds");
 
   public static void initialise() {
-    KeyMappingRegistry.register(rotateKey);
-    KeyMappingRegistry.register(openHotbarKey);
+    KeyBindings.registerKeyBinding(rotateKey);
+    KeyBindings.registerKeyBinding(openHotbarKey);
 
     ClientTickEvent.CLIENT_POST.register(client -> {
       var currentInstance = MultiClientState.getInstance();

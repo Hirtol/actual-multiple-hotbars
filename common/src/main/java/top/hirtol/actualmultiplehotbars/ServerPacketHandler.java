@@ -14,7 +14,7 @@ public class ServerPacketHandler {
 
   public static void swapRow(ServerPlayerEntity player, int fromHotbarIndex, int toHotbarIndex) {
     var state = ServerState.getPlayerState(player);
-    var playerInv = player.getInventory();
+    var playerInv = player.inventory;
 
     if (toHotbarIndex < 0 || toHotbarIndex > state.getRowCount() || fromHotbarIndex < 0
         || fromHotbarIndex > state.getRowCount()) {
@@ -54,7 +54,7 @@ public class ServerPacketHandler {
 
   public static void rotateRow(ServerPlayerEntity player, int maxHotbarRowExclusive) {
     var state = ServerState.getPlayerState(player);
-    var playerInv = player.getInventory();
+    var playerInv = player.inventory;
 
     if (maxHotbarRowExclusive < 0 || maxHotbarRowExclusive > state.getRowCount()) {
       logger.warn("Player {} attempted to use invalid rotate index: `{}`", player.getDisplayName().getString(),

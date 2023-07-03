@@ -28,7 +28,7 @@ ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.actualmultiplehotbars]]
-modId = "cloth_config"
+modId = "cloth-config"
 mandatory = true
 versionRange = "[4.0,)"
 ordering = "AFTER"

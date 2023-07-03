@@ -4,8 +4,8 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import top.hirtol.actualmultiplehotbars.ActualHotbars;
 import top.hirtol.actualmultiplehotbars.ServerState;
 import top.hirtol.actualmultiplehotbars.inventory.HotbarInventory;
@@ -15,7 +15,7 @@ public class OpenInvC2SPacket implements C2SPacket {
 
   public static final Identifier ID = new Identifier(ActualHotbars.MOD_ID, "special_action");
 
-  private static final Logger logger = LoggerFactory.getLogger(OpenInvC2SPacket.class);
+  private static final Logger logger = LogManager.getLogger(OpenInvC2SPacket.class);
 
   @Override
   public Identifier getId() {

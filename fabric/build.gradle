@@ -20,7 +20,6 @@ configurations {
 }
 
 dependencies {
-    implementation 'org.slf4j:slf4j-api:2.0.5'
     modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
     modApi "net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_api_version}"
     // Remove the next line if you don't want to depend on the API

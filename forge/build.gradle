@@ -28,7 +28,6 @@ configurations {
 }
 
 dependencies {
-    implementation 'org.slf4j:slf4j-api:2.0.5'
     forge "net.minecraftforge:forge:${rootProject.forge_version}"
     // Remove the next line if you don't want to depend on the API
     modApi "me.shedaniel:architectury-forge:${rootProject.architectury_version}"

@@ -8,15 +8,15 @@ import me.shedaniel.autoconfig.annotation.ConfigEntry;
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
 import org.lwjgl.glfw.GLFW;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import top.hirtol.actualmultiplehotbars.ActualHotbars;
 
 @Config(name = ActualHotbars.MOD_ID)
 public class AMHConfigData implements ConfigData {
 
   @ConfigEntry.Gui.Excluded
-  private static final Logger logger = LoggerFactory.getLogger(AMHConfigData.class);
+  private static final Logger logger = LogManager.getLogger(AMHConfigData.class);
 
   @ConfigEntry.Category("Server")
   @ConfigEntry.Gui.TransitiveObject
@@ -88,12 +88,22 @@ public class AMHConfigData implements ConfigData {
 
 
     public int toGlfwModifier() {
-      return switch (this) {
-        case Control -> GLFW.GLFW_MOD_CONTROL;
-        case Shift -> GLFW.GLFW_MOD_SHIFT;
-        case Alt -> GLFW.GLFW_MOD_ALT;
-        case Disabled -> 0xFFFFFFF;
-      };
+      int toReturn = 0xFFFFFFF;
+      switch (this) {
+
+        case Control:
+          toReturn = GLFW.GLFW_MOD_CONTROL;
+          break;
+        case Shift:
+          toReturn = GLFW.GLFW_MOD_SHIFT;
+          break;
+        case Alt:
+          toReturn = GLFW.GLFW_MOD_ALT;
+          break;
+        case Disabled:
+          break;
+      }
+      return toReturn;
     }
   }
 

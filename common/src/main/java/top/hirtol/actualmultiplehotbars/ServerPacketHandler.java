@@ -2,19 +2,21 @@ package top.hirtol.actualmultiplehotbars;
 
 import java.util.ArrayList;
 import java.util.List;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import top.hirtol.actualmultiplehotbars.inventory.HotbarInventory;
 
 public class ServerPacketHandler {
 
-  private static final Logger logger = LoggerFactory.getLogger(ServerPacketHandler.class);
+  private static final Logger logger = LogManager.getLogger(ServerPacketHandler.class);
 
   public static void swapRow(ServerPlayerEntity player, int fromHotbarIndex, int toHotbarIndex) {
-    var state = ServerState.getPlayerState(player);
-    var playerInv = player.inventory;
+    HotbarInventory state = ServerState.getPlayerState(player);
+    PlayerInventory playerInv = player.inventory;
 
     if (toHotbarIndex < 0 || toHotbarIndex > state.getRowCount() || fromHotbarIndex < 0
         || fromHotbarIndex > state.getRowCount()) {
@@ -53,8 +55,8 @@ public class ServerPacketHandler {
   }
 
   public static void rotateRow(ServerPlayerEntity player, int maxHotbarRowExclusive) {
-    var state = ServerState.getPlayerState(player);
-    var playerInv = player.inventory;
+    HotbarInventory state = ServerState.getPlayerState(player);
+    PlayerInventory playerInv = player.inventory;
 
     if (maxHotbarRowExclusive < 0 || maxHotbarRowExclusive > state.getRowCount()) {
       logger.warn("Player {} attempted to use invalid rotate index: `{}`", player.getDisplayName().getString(),
@@ -84,7 +86,7 @@ public class ServerPacketHandler {
         state.setStack(baseTo + i, oldFrom.get(i));
       }
 
-      var temp = oldFrom;
+      List<ItemStack> temp = oldFrom;
       oldFrom = oldTo;
       oldTo = temp;
       temp.clear();

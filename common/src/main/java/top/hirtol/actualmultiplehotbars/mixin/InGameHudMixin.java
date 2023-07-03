@@ -8,20 +8,21 @@ import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import top.hirtol.actualmultiplehotbars.client.MultiClientState;
+import top.hirtol.actualmultiplehotbars.config.AMHConfigData.ClientSettings;
 
 @Environment(EnvType.CLIENT)
 @Mixin(InGameHud.class)
 public abstract class InGameHudMixin extends DrawableHelper {
 
-  private static final Logger logger = LoggerFactory.getLogger(InGameHudMixin.class);
+  private static final Logger logger = LogManager.getLogger(InGameHudMixin.class);
   private boolean onScreen = false;
   @Shadow
   private int scaledHeight;
@@ -36,7 +37,7 @@ public abstract class InGameHudMixin extends DrawableHelper {
 
   @Inject(method = "renderHotbar", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;drawTexture(Lnet/minecraft/client/util/math/MatrixStack;IIIIII)V", ordinal = 0))
   private void renderHotbarFrame(float tickDelta, MatrixStack matrices, CallbackInfo info) {
-    var settings = MultiClientState.getInstance().config().getClientSettings();
+    ClientSettings settings = MultiClientState.getInstance().config().getClientSettings();
 
     for (int i = 0; i < settings.numberOfAdditionalVisibleHotbars; i++) {
       drawTexture(matrices, this.scaledWidth / 2 - 91,
@@ -49,7 +50,7 @@ public abstract class InGameHudMixin extends DrawableHelper {
 
   @Inject(method = "renderHotbar", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;drawTexture(Lnet/minecraft/client/util/math/MatrixStack;IIIIII)V", ordinal = 1))
   private void shiftHotbarSelector(float tickDelta, MatrixStack matrices, CallbackInfo info) {
-    var settings = MultiClientState.getInstance().config().getClientSettings();
+    ClientSettings settings = MultiClientState.getInstance().config().getClientSettings();
     if (settings.reverseBars) {
       matrices.translate(0, -(settings.shift * settings.numberOfAdditionalVisibleHotbars), 0);
     }
@@ -57,7 +58,7 @@ public abstract class InGameHudMixin extends DrawableHelper {
 
   @Inject(method = "renderHotbar", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isEmpty()Z", ordinal = 0))
   private void returnHotbarSelector(float tickDelta, MatrixStack matrices, CallbackInfo info) {
-    var settings = MultiClientState.getInstance().config().getClientSettings();
+    ClientSettings settings = MultiClientState.getInstance().config().getClientSettings();
     if (settings.reverseBars) {
       matrices.translate(0, (settings.shift * settings.numberOfAdditionalVisibleHotbars), 0);
     }
@@ -65,7 +66,7 @@ public abstract class InGameHudMixin extends DrawableHelper {
 
   @Inject(method = "renderHotbar", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;setZOffset(I)V", ordinal = 1))
   private void shiftHotbarItems(float tickDelta, MatrixStack matrices, CallbackInfo info) {
-    var settings = MultiClientState.getInstance().config().getClientSettings();
+    ClientSettings settings = MultiClientState.getInstance().config().getClientSettings();
     if (settings.reverseBars) {
       this.scaledHeight -= (settings.shift * settings.numberOfAdditionalVisibleHotbars);
     }
@@ -73,7 +74,7 @@ public abstract class InGameHudMixin extends DrawableHelper {
 
   @Inject(method = "renderHotbar", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isEmpty()Z", ordinal = 1))
   private void renderHotbarItems(float tickDelta, MatrixStack matrices, CallbackInfo info) {
-    var settings = MultiClientState.getInstance().config().getClientSettings();
+    ClientSettings settings = MultiClientState.getInstance().config().getClientSettings();
 
     if (settings.reverseBars) {
       this.scaledHeight += (settings.shift * (settings.numberOfAdditionalVisibleHotbars));
@@ -95,7 +96,7 @@ public abstract class InGameHudMixin extends DrawableHelper {
   @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;hasStatusBars()Z"))
   public void shiftStatusBars(MatrixStack matrices, float tickDelta, CallbackInfo info) {
     if (this.onScreen) {
-      var settings = MultiClientState.getInstance().config().getClientSettings();
+      ClientSettings settings = MultiClientState.getInstance().config().getClientSettings();
       matrices.translate(0, -(settings.shift * settings.numberOfAdditionalVisibleHotbars), 0);
     }
   }
@@ -103,7 +104,7 @@ public abstract class InGameHudMixin extends DrawableHelper {
   @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;getSleepTimer()I", ordinal = 0))
   public void returnStatusBars(MatrixStack matrices, float tickDelta, CallbackInfo info) {
     if (this.onScreen) {
-      var settings = MultiClientState.getInstance().config().getClientSettings();
+      ClientSettings settings = MultiClientState.getInstance().config().getClientSettings();
       matrices.translate(0, (settings.shift * settings.numberOfAdditionalVisibleHotbars), 0);
     }
     this.onScreen = false;

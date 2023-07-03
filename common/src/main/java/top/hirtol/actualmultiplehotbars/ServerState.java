@@ -19,7 +19,7 @@ public class ServerState extends PersistentState {
   private static final HashMap<UUID, Boolean> MODDED_PLAYERS = new HashMap<>();
 
   public ServerState() {
-    super("players");
+    super(ActualHotbars.MOD_ID);
   }
 
   @Override
@@ -77,7 +77,7 @@ public class ServerState extends PersistentState {
     if (player.world.getServer() != null && isPlayerModded((ServerPlayerEntity) player)) {
       ServerState serverState = getServerState(player.world.getServer());
 
-      var partial = serverState.players.computeIfAbsent(player.getUuid(), uuid -> new PartialHotbarInventory());
+      PartialHotbarInventory partial = serverState.players.computeIfAbsent(player.getUuid(), uuid -> new PartialHotbarInventory());
 
       return new HotbarInventory(partial, (ServerPlayerEntity) player);
     } else {

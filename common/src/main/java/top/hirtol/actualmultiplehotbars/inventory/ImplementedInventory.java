@@ -1,10 +1,12 @@
 package top.hirtol.actualmultiplehotbars.inventory;
 
+import java.util.Arrays;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.collection.DefaultedList;
+import top.hirtol.actualmultiplehotbars.ActualHotbars;
 
 /**
  * A simple {@code Inventory} implementation with only default methods + an item list getter.
@@ -72,6 +74,7 @@ public interface ImplementedInventory extends Inventory {
    */
   @Override
   default ItemStack removeStack(int slot, int count) {
+    ActualHotbars.logger.warn("HEYYSS");
     ItemStack result = Inventories.splitStack(getItems(), slot, count);
     if (!result.isEmpty()) {
       markDirty();
@@ -85,6 +88,7 @@ public interface ImplementedInventory extends Inventory {
    */
   @Override
   default ItemStack removeStack(int slot) {
+    ActualHotbars.logger.warn("HEYYSSSSS");
     return Inventories.removeStack(getItems(), slot);
   }
 

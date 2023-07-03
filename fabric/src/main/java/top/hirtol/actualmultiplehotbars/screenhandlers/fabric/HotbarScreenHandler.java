@@ -5,8 +5,8 @@ import io.github.cottonmc.cotton.gui.widget.WItemSlot;
 import io.github.cottonmc.cotton.gui.widget.WPlainPanel;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.Identifier;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import top.hirtol.actualmultiplehotbars.ActualHotbars;
 import top.hirtol.actualmultiplehotbars.fabric.ActualHotbarsFabric;
 import top.hirtol.actualmultiplehotbars.inventory.PartialHotbarInventory;
@@ -15,7 +15,7 @@ public class HotbarScreenHandler extends SyncedGuiDescription {
 
   public static final Identifier HOTBAR_SCREEN_ID = new Identifier(ActualHotbars.MOD_ID, "gui");
 
-  private static final Logger logger = LoggerFactory.getLogger(HotbarScreenHandler.class);
+  private static final Logger logger = LogManager.getLogger(HotbarScreenHandler.class);
   private final PartialHotbarInventory hotbarInventory;
 
   public HotbarScreenHandler(int syncId, PlayerInventory playerInventory) {

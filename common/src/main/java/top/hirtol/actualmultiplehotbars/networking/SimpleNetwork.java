@@ -7,12 +7,12 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class SimpleNetwork {
 
-  private static final Logger logger = LoggerFactory.getLogger(SimpleNetwork.class);
+  private static final Logger logger = LogManager.getLogger(SimpleNetwork.class);
 
   public static <T extends C2SPacket> void registerC2S(Identifier id, Function<PacketByteBuf, T> packetRead) {
     NetworkManager.registerReceiver(Side.C2S, id, (buf, context) -> {

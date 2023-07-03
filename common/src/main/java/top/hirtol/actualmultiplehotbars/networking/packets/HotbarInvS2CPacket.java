@@ -5,8 +5,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import top.hirtol.actualmultiplehotbars.ActualHotbars;
 import top.hirtol.actualmultiplehotbars.client.MultiClientState;
 import top.hirtol.actualmultiplehotbars.inventory.PartialHotbarInventory;
@@ -15,7 +15,7 @@ import top.hirtol.actualmultiplehotbars.networking.S2CPacket;
 public class HotbarInvS2CPacket implements S2CPacket {
 
   public static final Identifier ID = new Identifier(ActualHotbars.MOD_ID, "hotbar_sync");
-  private static final Logger logger = LoggerFactory.getLogger(HotbarInvS2CPacket.class);
+  private static final Logger logger = LogManager.getLogger(HotbarInvS2CPacket.class);
 
   private PartialHotbarInventory inventory;
 
@@ -43,8 +43,8 @@ public class HotbarInvS2CPacket implements S2CPacket {
   }
 
   public static HotbarInvS2CPacket read(PacketByteBuf buf) {
-    var length = buf.readInt();
-    var defaulted = DefaultedList.ofSize(length, ItemStack.EMPTY);
+    int length = buf.readInt();
+    DefaultedList<ItemStack> defaulted = DefaultedList.ofSize(length, ItemStack.EMPTY);
     for (int i = 0; i < length; i++) {
       defaulted.set(i, buf.readItemStack());
     }

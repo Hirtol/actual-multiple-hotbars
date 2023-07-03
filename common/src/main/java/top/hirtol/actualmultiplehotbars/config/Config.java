@@ -1,17 +1,18 @@
 package top.hirtol.actualmultiplehotbars.config;
 
 import me.shedaniel.autoconfig.AutoConfig;
+import me.shedaniel.autoconfig.ConfigHolder;
 import me.shedaniel.autoconfig.event.ConfigSerializeEvent.Save;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import top.hirtol.actualmultiplehotbars.config.AMHConfigData.ClientSettings;
 import top.hirtol.actualmultiplehotbars.config.AMHConfigData.ServerSettings;
 
 public class Config {
 
-  private static final Logger logger = LoggerFactory.getLogger(Config.class);
+  private static final Logger logger = LogManager.getLogger(Config.class);
 
   private static Config INSTANCE;
 
@@ -19,7 +20,7 @@ public class Config {
   private ServerSettings remoteSettings;
 
   public static void init() {
-    var data = AMHConfigData.init();
+    ConfigHolder<AMHConfigData> data = AMHConfigData.init();
 
     INSTANCE = new Config(data.getConfig());
   }

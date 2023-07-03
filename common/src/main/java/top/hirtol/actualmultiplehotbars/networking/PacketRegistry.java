@@ -4,8 +4,8 @@ import java.util.Collection;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.util.Identifier;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import top.hirtol.actualmultiplehotbars.networking.packets.HotbarInvS2CPacket;
 import top.hirtol.actualmultiplehotbars.networking.packets.HotbarRotateC2SPacket;
 import top.hirtol.actualmultiplehotbars.networking.packets.HotbarSwapC2SPacket;
@@ -14,7 +14,7 @@ import top.hirtol.actualmultiplehotbars.networking.packets.SyncS2CConfigPacket;
 
 public class PacketRegistry {
 
-  private static final Logger logger = LoggerFactory.getLogger(PacketRegistry.class);
+  private static final Logger logger = LogManager.getLogger(PacketRegistry.class);
 
   /**
    * Initialise all packet listeners relevant for the server.

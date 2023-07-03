@@ -2,10 +2,11 @@ package top.hirtol.actualmultiplehotbars.client.providers;
 
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.item.ItemStack;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import top.hirtol.actualmultiplehotbars.config.Config;
 import top.hirtol.actualmultiplehotbars.client.MultiClientState;
+import top.hirtol.actualmultiplehotbars.inventory.PartialHotbarInventory;
 import top.hirtol.actualmultiplehotbars.networking.packets.HotbarRotateC2SPacket;
 import top.hirtol.actualmultiplehotbars.networking.packets.HotbarSwapC2SPacket;
 
@@ -22,14 +23,14 @@ import top.hirtol.actualmultiplehotbars.networking.packets.HotbarSwapC2SPacket;
  */
 public class ExternalHotbarProvider implements HotbarInventoryProvider {
 
-  private static final Logger logger = LoggerFactory.getLogger(ExternalHotbarProvider.class);
+  private static final Logger logger = LogManager.getLogger(ExternalHotbarProvider.class);
 
   private int currentSwapIndex = 1;
   private Config config = MultiClientState.getInstance().config();
 
   @Override
   public ItemStack getItem(int i) {
-    var inventory = MultiClientState.getInstance().getHotbarInventory();
+    PartialHotbarInventory inventory = MultiClientState.getInstance().getHotbarInventory();
 
     if (inventory != null) {
       return inventory.getStack(i);
@@ -46,7 +47,7 @@ public class ExternalHotbarProvider implements HotbarInventoryProvider {
   @Override
   public void swapRow(ClientPlayerEntity player, int row) {
     if (row != 0) {
-      var packet = new HotbarSwapC2SPacket(0, row);
+      HotbarSwapC2SPacket packet = new HotbarSwapC2SPacket(0, row);
       this.currentSwapIndex = nextSwapIndex(this.currentSwapIndex);
 
       packet.send();
@@ -55,7 +56,7 @@ public class ExternalHotbarProvider implements HotbarInventoryProvider {
 
   @Override
   public void rotate(ClientPlayerEntity player) {
-    var packet = new HotbarRotateC2SPacket(this.getMaxRowIndex());
+    HotbarRotateC2SPacket packet = new HotbarRotateC2SPacket(this.getMaxRowIndex());
     packet.send();
   }
 

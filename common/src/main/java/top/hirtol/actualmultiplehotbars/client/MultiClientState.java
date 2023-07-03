@@ -1,11 +1,12 @@
 package top.hirtol.actualmultiplehotbars.client;
 
+import java.util.Objects;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.ConfigHolder;
 import net.minecraft.util.ActionResult;
 import org.jetbrains.annotations.Nullable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import top.hirtol.actualmultiplehotbars.config.AMHConfigData;
 import top.hirtol.actualmultiplehotbars.config.AMHConfigData.InventoryProvider;
 import top.hirtol.actualmultiplehotbars.config.Config;
@@ -15,7 +16,7 @@ import top.hirtol.actualmultiplehotbars.inventory.PartialHotbarInventory;
 
 public class MultiClientState {
 
-  private static final Logger logger = LoggerFactory.getLogger(MultiClientState.class);
+  private static final Logger logger = LogManager.getLogger(MultiClientState.class);
   private static final MultiClientState INSTANCE = new MultiClientState();
 
   private HotbarInventoryProvider provider;
@@ -42,9 +43,9 @@ public class MultiClientState {
   }
 
   private void initialiseProvider(InventoryProvider provider) {
-    this.provider = switch (provider) {
-      case HotbarInventory -> new ExternalHotbarProvider();
-    };
+    if (provider == InventoryProvider.HotbarInventory) {
+      this.provider = new ExternalHotbarProvider();
+    }
   }
 
   public Config config() {

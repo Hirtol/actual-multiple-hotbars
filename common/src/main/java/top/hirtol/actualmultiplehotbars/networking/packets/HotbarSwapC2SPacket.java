@@ -4,8 +4,8 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import top.hirtol.actualmultiplehotbars.ActualHotbars;
 import top.hirtol.actualmultiplehotbars.ServerPacketHandler;
 import top.hirtol.actualmultiplehotbars.networking.C2SPacket;
@@ -13,7 +13,7 @@ import top.hirtol.actualmultiplehotbars.networking.C2SPacket;
 public class HotbarSwapC2SPacket implements C2SPacket {
 
   public static final Identifier ID = new Identifier(ActualHotbars.MOD_ID, "external_hotbar_swap");
-  private static final Logger logger = LoggerFactory.getLogger(HotbarSwapC2SPacket.class);
+  private static final Logger logger = LogManager.getLogger(HotbarSwapC2SPacket.class);
 
   public int toIndex;
   public int fromIndex;

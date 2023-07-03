@@ -1,4 +1,4 @@
-package top.hirtol.actualmultiplehotbars.forge.screenhandlers;
+package top.hirtol.actualmultiplehotbars.screenhandlers.forge;
 
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.screen.ScreenHandler;

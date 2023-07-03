@@ -17,10 +17,10 @@
   "environment": "*",
   "entrypoints": {
     "client": [
-      "top.hirtol.actualmultiplehotbars.ActualHotbarsFabricClient"
+      "top.hirtol.actualmultiplehotbars.fabric.ActualHotbarsFabricClient"
     ],
     "main": [
-      "top.hirtol.actualmultiplehotbars.ActualHotbarsFabric"
+      "top.hirtol.actualmultiplehotbars.fabric.ActualHotbarsFabric"
     ],
     "modmenu": [
       "top.hirtol.actualmultiplehotbars.ModMenuIntegration"

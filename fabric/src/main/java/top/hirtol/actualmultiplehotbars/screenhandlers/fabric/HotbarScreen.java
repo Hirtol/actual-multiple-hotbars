@@ -1,4 +1,4 @@
-package top.hirtol.actualmultiplehotbars.screenhandlers;
+package top.hirtol.actualmultiplehotbars.screenhandlers.fabric;
 
 import io.github.cottonmc.cotton.gui.client.CottonInventoryScreen;
 import net.minecraft.client.network.ClientPlayerEntity;

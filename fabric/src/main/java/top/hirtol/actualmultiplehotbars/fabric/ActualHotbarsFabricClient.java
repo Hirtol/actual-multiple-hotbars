@@ -5,8 +5,8 @@ import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import top.hirtol.actualmultiplehotbars.ActualHotbarsClient;
-import top.hirtol.actualmultiplehotbars.screenhandlers.HotbarScreen;
-import top.hirtol.actualmultiplehotbars.screenhandlers.HotbarScreenHandler;
+import top.hirtol.actualmultiplehotbars.screenhandlers.fabric.HotbarScreen;
+import top.hirtol.actualmultiplehotbars.screenhandlers.fabric.HotbarScreenHandler;
 
 public class ActualHotbarsFabricClient implements ClientModInitializer {
 

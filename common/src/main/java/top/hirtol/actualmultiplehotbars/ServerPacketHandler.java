@@ -56,7 +56,7 @@ public class ServerPacketHandler {
     var state = ServerState.getPlayerState(player);
     var playerInv = player.getInventory();
 
-    if (maxHotbarRowExclusive < 0 || maxHotbarRowExclusive >= state.getRowCount()) {
+    if (maxHotbarRowExclusive < 0 || maxHotbarRowExclusive > state.getRowCount()) {
       logger.warn("Player {} attempted to use invalid rotate index: `{}`", player.getDisplayName().getString(),
           maxHotbarRowExclusive);
       return;

@@ -37,6 +37,7 @@ public class AMHConfigData implements ConfigData {
      * <p>
      * Server enforced.
      */
+    @ConfigEntry.BoundedDiscrete(min = 0, max = 6)
     @ConfigEntry.Gui.RequiresRestart
     @Comment("The amount of additional hotbars available for players when `HotbarInventory` is selected. Server Enforced")
     public int additionalHotbars = 3;

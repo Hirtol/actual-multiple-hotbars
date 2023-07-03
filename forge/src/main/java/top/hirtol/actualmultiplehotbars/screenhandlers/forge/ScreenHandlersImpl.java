@@ -11,6 +11,6 @@ public class ScreenHandlersImpl {
   private static final Logger logger = LoggerFactory.getLogger(ScreenHandlersImpl.class);
 
   public static ScreenHandler createScreen(int syncId, PlayerInventory inv, HotbarInventory hotbarInventory) {
-    return null;
+    return new HotbarScreenHandler(syncId, inv, hotbarInventory);
   }
 }

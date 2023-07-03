@@ -31,7 +31,7 @@ side = "BOTH"
 modId = "cloth_config"
 mandatory = true
 versionRange = "[4.0,)"
-ordering = "BEFORE"
+ordering = "AFTER"
 side = "BOTH"
 
 [[dependencies.actualmultiplehotbars]]

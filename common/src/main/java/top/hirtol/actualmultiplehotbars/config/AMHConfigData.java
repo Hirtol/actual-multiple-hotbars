@@ -43,7 +43,7 @@ public class AMHConfigData implements ConfigData {
     public int additionalHotbars = 3;
 
     @ConfigEntry.Gui.Tooltip(count = 2)
-    public boolean preferAdditionalOverMain = false;
+    public boolean preferAdditionalOverMain = true;
     @ConfigEntry.Gui.Tooltip(count = 2)
     public boolean allowFillingAdditional = true;
     @ConfigEntry.Gui.Tooltip(count = 2)

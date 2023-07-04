@@ -4,8 +4,8 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.item.ItemStack;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import top.hirtol.actualmultiplehotbars.config.Config;
 import top.hirtol.actualmultiplehotbars.client.MultiClientState;
+import top.hirtol.actualmultiplehotbars.config.Config;
 import top.hirtol.actualmultiplehotbars.networking.packets.HotbarRotateC2SPacket;
 import top.hirtol.actualmultiplehotbars.networking.packets.HotbarSwapC2SPacket;
 
@@ -45,22 +45,20 @@ public class ExternalHotbarProvider implements HotbarInventoryProvider {
 
   @Override
   public void swapRow(ClientPlayerEntity player, int row) {
-    if (row != 0) {
-      var packet = new HotbarSwapC2SPacket(0, row);
-      this.currentSwapIndex = nextSwapIndex(this.currentSwapIndex);
+    var packet = new HotbarSwapC2SPacket(
+        MultiClientState.getInstance().getHotbarInventory().getVirtualState().currentVirtualHotbar, row);
 
-      packet.send();
-    }
+    packet.send();
   }
 
   @Override
   public void rotate(ClientPlayerEntity player) {
-    var packet = new HotbarRotateC2SPacket(this.getMaxRowIndex());
+    var packet = new HotbarRotateC2SPacket(this.getMaxRowIndexExcl());
     packet.send();
   }
 
   private int nextSwapIndex(int currentSwapIndex) {
-    if (getMaxRowIndex() == currentSwapIndex) {
+    if (getMaxRowIndexExcl() == currentSwapIndex) {
       return 0;
     } else {
       return currentSwapIndex + 1;
@@ -69,15 +67,15 @@ public class ExternalHotbarProvider implements HotbarInventoryProvider {
 
   private int previousSwapIndex(int currentSwapIndex) {
     if (currentSwapIndex == 1) {
-      return getMaxRowIndex();
+      return getMaxRowIndexExcl();
     } else {
       return currentSwapIndex - 1;
     }
   }
 
-  private int getMaxRowIndex() {
+  private int getMaxRowIndexExcl() {
     int additionalPossible = Math.max(this.config.getAdditionalHotbars() - 1, 0);
-    int maxVisibleIndex = Math.max(this.config.getClientSettings().numberOfAdditionalVisibleHotbars - 1, 0);
+    int maxVisibleIndex = Math.max(this.config.getClientSettings().numberOfAdditionalVisibleHotbars, 0);
 
     return (this.config.getClientSettings().rotateBeyondVisible ?
         additionalPossible

@@ -11,12 +11,11 @@ import net.minecraft.world.PersistentStateManager;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import top.hirtol.actualmultiplehotbars.inventory.HotbarInventory;
-import top.hirtol.actualmultiplehotbars.inventory.PartialHotbarInventory;
+import top.hirtol.actualmultiplehotbars.inventory.HotbarInvState;
 
 public class ServerState extends PersistentState {
 
-  public HashMap<UUID, PartialHotbarInventory> players = new HashMap<>();
-  private static final HashMap<UUID, Boolean> MODDED_PLAYERS = new HashMap<>();
+  public HashMap<UUID, HotbarInvState> players = new HashMap<>();
 
   @Override
   public NbtCompound writeNbt(NbtCompound nbt) {
@@ -48,7 +47,8 @@ public class ServerState extends PersistentState {
 
     NbtCompound playersTag = tag.getCompound("players");
     playersTag.getKeys().forEach(key -> {
-      PartialHotbarInventory playerState = PartialHotbarInventory.fromNbt(playersTag.getCompound(key));
+      HotbarInvState playerState = new HotbarInvState();
+      playerState.readNbt(playersTag.getCompound(key));
 
       UUID uuid = UUID.fromString(key);
       serverState.players.put(uuid, playerState);
@@ -66,22 +66,14 @@ public class ServerState extends PersistentState {
    */
   @Nullable
   public static HotbarInventory getPlayerState(PlayerEntity player) {
-    if (player.world.getServer() != null && isPlayerModded((ServerPlayerEntity) player)) {
+    if (player.world.getServer() != null) {
       ServerState serverState = getServerState(player.world.getServer());
 
-      var partial = serverState.players.computeIfAbsent(player.getUuid(), uuid -> new PartialHotbarInventory());
+      var partial = serverState.players.computeIfAbsent(player.getUuid(), uuid -> new HotbarInvState());
 
       return new HotbarInventory(partial, (ServerPlayerEntity) player);
     } else {
       return null;
     }
-  }
-
-  public static boolean isPlayerModded(ServerPlayerEntity player) {
-    return MODDED_PLAYERS.getOrDefault(player.getUuid(), true);
-  }
-
-  public static void setPlayerModded(ServerPlayerEntity player, boolean isModded) {
-    MODDED_PLAYERS.put(player.getUuid(), isModded);
   }
 }

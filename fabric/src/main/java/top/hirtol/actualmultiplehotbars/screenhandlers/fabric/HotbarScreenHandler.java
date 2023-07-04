@@ -10,20 +10,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import top.hirtol.actualmultiplehotbars.ActualHotbars;
 import top.hirtol.actualmultiplehotbars.fabric.ActualHotbarsFabric;
-import top.hirtol.actualmultiplehotbars.inventory.PartialHotbarInventory;
+import top.hirtol.actualmultiplehotbars.inventory.HotbarInvState;
 
 public class HotbarScreenHandler extends SyncedGuiDescription {
 
   public static final Identifier HOTBAR_SCREEN_ID = new Identifier(ActualHotbars.MOD_ID, "gui");
 
   private static final Logger logger = LoggerFactory.getLogger(HotbarScreenHandler.class);
-  private final PartialHotbarInventory hotbarInventory;
+  private final HotbarInvState hotbarInventory;
 
   public HotbarScreenHandler(int syncId, PlayerInventory playerInventory) {
-    this(syncId, playerInventory, new PartialHotbarInventory());
+    this(syncId, playerInventory, new HotbarInvState());
   }
 
-  public HotbarScreenHandler(int syncId, PlayerInventory playerInventory, PartialHotbarInventory inventory) {
+  public HotbarScreenHandler(int syncId, PlayerInventory playerInventory, HotbarInvState inventory) {
     super(ActualHotbarsFabric.HOTBAR_SCREEN, syncId, playerInventory);
 
     this.hotbarInventory = inventory;

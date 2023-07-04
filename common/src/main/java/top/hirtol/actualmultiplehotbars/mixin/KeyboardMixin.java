@@ -35,8 +35,9 @@ public abstract class KeyboardMixin {
       return;
     }
     // Quick way to check if we have a number 1..=9
-    int rowToEquip = (key - GLFW.GLFW_KEY_1) + 1;
-    if (rowToEquip < 1 || rowToEquip > 9) {
+    // This is explicitly done so that pressing `1` will map to `0` (aka, MAIN_HOTBAR)
+    int rowToEquip = (key - GLFW.GLFW_KEY_1);
+    if (rowToEquip < 0 || rowToEquip > 8) {
       return;
     }
 

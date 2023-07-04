@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import top.hirtol.actualmultiplehotbars.ActualHotbars;
 import top.hirtol.actualmultiplehotbars.ServerPacketHandler;
+import top.hirtol.actualmultiplehotbars.ServerState;
 import top.hirtol.actualmultiplehotbars.networking.C2SPacket;
 
 public class HotbarSwapC2SPacket implements C2SPacket {
@@ -29,7 +30,8 @@ public class HotbarSwapC2SPacket implements C2SPacket {
 
   @Override
   public void handle(MinecraftServer server, ServerPlayerEntity serverPlayer) {
-    ServerPacketHandler.swapRow(serverPlayer, this.fromIndex, this.toIndex);
+    var state = ServerState.getPlayerState(serverPlayer);
+    state.swapVirtual(this.fromIndex, this.toIndex);
   }
 
   @Override

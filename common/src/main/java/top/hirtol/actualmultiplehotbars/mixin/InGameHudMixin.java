@@ -16,6 +16,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import top.hirtol.actualmultiplehotbars.client.MultiClientState;
+import top.hirtol.actualmultiplehotbars.inventory.PlayerHotbarState;
 
 @Environment(EnvType.CLIENT)
 @Mixin(InGameHud.class)
@@ -96,15 +97,29 @@ public abstract class InGameHudMixin extends DrawableHelper {
     }
 
     for (int hotbarI = 0; hotbarI < settings.numberOfAdditionalVisibleHotbars; hotbarI++) {
+      int shift = (settings.shift * (settings.reverseBars ? settings.numberOfAdditionalVisibleHotbars - (hotbarI + 1): hotbarI + 1));
+      int p = this.scaledHeight - 16 - 3 - shift;
       int m = 1;
-      for (int slotI = 0; slotI < 9; ++slotI) {
-        int o = this.scaledWidth / 2 - 90 + slotI * 20 + 2;
-        int shift = (settings.shift * (settings.reverseBars ? settings.numberOfAdditionalVisibleHotbars - (hotbarI + 1): hotbarI + 1));
-        int p =
-            this.scaledHeight - 16 - 3 - shift;
-        int rowStart = hotbarI * 9;
-        ItemStack item = MultiClientState.getInstance().getProvider().getItem(rowStart + slotI);
-        this.renderHotbarItem(o, p, tickDelta, getCameraPlayer(), item, m++);
+
+      int physicalHotbarIndex = MultiClientState.getInstance().getHotbarInventory().getVirtualState().virtualPhysicalMappings.getInt(hotbarI + 1);
+      int inventoryIndex = PlayerHotbarState.toInventoryRowIndex(physicalHotbarIndex);
+
+      if (physicalHotbarIndex == PlayerHotbarState.MAIN_HOTBAR_INDEX) {
+        for (int slotI = 0; slotI < 9; ++slotI) {
+          int o = this.scaledWidth / 2 - 90 + slotI * 20 + 2;
+
+          ItemStack item = getCameraPlayer().getInventory().getStack(inventoryIndex + slotI);
+          this.renderHotbarItem(o, p, tickDelta, getCameraPlayer(), item, m++);
+        }
+      } else {
+        int rowStart = inventoryIndex * 9;
+
+        for (int slotI = 0; slotI < 9; ++slotI) {
+          int o = this.scaledWidth / 2 - 90 + slotI * 20 + 2;
+
+          ItemStack item = MultiClientState.getInstance().getProvider().getItem(rowStart + slotI);
+          this.renderHotbarItem(o, p, tickDelta, getCameraPlayer(), item, m++);
+        }
       }
     }
   }

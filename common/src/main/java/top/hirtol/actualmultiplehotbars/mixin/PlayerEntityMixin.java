@@ -32,12 +32,12 @@ public abstract class PlayerEntityMixin {
   @Inject(method = "dropInventory", at = @At(value = "RETURN"))
   private void dropHotbarsOnDeath(CallbackInfo ci) {
     // First ensure we're on the server & we're dealing with a modded player.
-    if (!inventory.player.world.isClient && ServerState.isPlayerModded((ServerPlayerEntity) inventory.player)) {
+    if (!inventory.player.world.isClient) {
       if (inventory.player.world.getGameRules().getBoolean(GameRules.KEEP_INVENTORY)) {
         return;
       }
 
-      var hotbarInv = ServerState.getPlayerState((ServerPlayerEntity) inventory.player);
+      var hotbarInv = ServerState.getPlayerState(inventory.player);
       logger.trace("Dropping additional hotbars for player {} at {}", inventory.player.getDisplayName().getString(), inventory.player.getBlockPos());
 
       for (int i = 0; i < hotbarInv.getItems().size(); ++i) {

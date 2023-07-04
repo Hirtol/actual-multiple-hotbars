@@ -7,26 +7,29 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.collection.DefaultedList;
 import top.hirtol.actualmultiplehotbars.config.Config;
 
-public class PartialHotbarInventory implements ImplementedInventory {
+public class HotbarInvState implements ImplementedInventory {
 
   private final DefaultedList<ItemStack> items;
 
-  public PartialHotbarInventory() {
-    this(DefaultedList.ofSize(Config.getInstance().getAdditionalHotbars() * 9, ItemStack.EMPTY));
+  private final PlayerHotbarState state;
+
+  public HotbarInvState() {
+    this(DefaultedList.ofSize(Config.getInstance().getAdditionalHotbars() * 9, ItemStack.EMPTY), new PlayerHotbarState(1 + Config.getInstance().getAdditionalHotbars()));
   }
 
-  public PartialHotbarInventory(DefaultedList<ItemStack> items) {
+  public HotbarInvState(DefaultedList<ItemStack> items, PlayerHotbarState state) {
     this.items = items;
+    this.state = state;
   }
 
-  public static PartialHotbarInventory fromNbt(NbtCompound nbt) {
-    PartialHotbarInventory playerState = new PartialHotbarInventory();
-    Inventories.readNbt(nbt, playerState.items);
-    return playerState;
+  public void readNbt(NbtCompound nbt) {
+    Inventories.readNbt(nbt, this.items);
+    state.readNbt(nbt);
   }
 
   public NbtCompound writeNbt(NbtCompound nbt) {
     Inventories.writeNbt(nbt, this.items);
+    state.writeNbt(nbt);
 
     return nbt;
   }
@@ -37,6 +40,10 @@ public class PartialHotbarInventory implements ImplementedInventory {
 
   public int getRowCount() {
     return this.items.size() / this.getColumnCount();
+  }
+
+  public PlayerHotbarState getVirtualState() {
+    return state;
   }
 
   @Override

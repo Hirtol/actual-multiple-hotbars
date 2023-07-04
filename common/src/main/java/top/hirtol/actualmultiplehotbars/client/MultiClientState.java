@@ -11,7 +11,7 @@ import top.hirtol.actualmultiplehotbars.config.AMHConfigData.InventoryProvider;
 import top.hirtol.actualmultiplehotbars.config.Config;
 import top.hirtol.actualmultiplehotbars.client.providers.ExternalHotbarProvider;
 import top.hirtol.actualmultiplehotbars.client.providers.HotbarInventoryProvider;
-import top.hirtol.actualmultiplehotbars.inventory.PartialHotbarInventory;
+import top.hirtol.actualmultiplehotbars.inventory.HotbarInvState;
 
 public class MultiClientState {
 
@@ -21,7 +21,7 @@ public class MultiClientState {
   private HotbarInventoryProvider provider;
 
   @Nullable
-  private PartialHotbarInventory hotbarInventory;
+  private HotbarInvState hotbarInventory;
 
   public static MultiClientState getInstance() {
     return INSTANCE;
@@ -55,11 +55,11 @@ public class MultiClientState {
     return provider;
   }
 
-  public PartialHotbarInventory getHotbarInventory() {
+  public HotbarInvState getHotbarInventory() {
     return hotbarInventory;
   }
 
-  public void setHotbarInventory(PartialHotbarInventory hotbarInventory) {
+  public void setHotbarInventory(HotbarInvState hotbarInventory) {
     this.hotbarInventory = hotbarInventory;
   }
 }

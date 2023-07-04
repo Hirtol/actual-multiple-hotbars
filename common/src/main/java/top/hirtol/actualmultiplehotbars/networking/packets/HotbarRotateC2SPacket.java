@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import top.hirtol.actualmultiplehotbars.ActualHotbars;
 import top.hirtol.actualmultiplehotbars.ActualHotbars;
 import top.hirtol.actualmultiplehotbars.ServerPacketHandler;
+import top.hirtol.actualmultiplehotbars.ServerState;
 import top.hirtol.actualmultiplehotbars.networking.C2SPacket;
 
 public class HotbarRotateC2SPacket implements C2SPacket {
@@ -24,7 +25,8 @@ public class HotbarRotateC2SPacket implements C2SPacket {
 
   @Override
   public void handle(MinecraftServer server, ServerPlayerEntity serverPlayer) {
-    ServerPacketHandler.rotateRow(serverPlayer, this.maxRotateIndexIncl);
+    var state = ServerState.getPlayerState(serverPlayer);
+    state.rotateVirtualHotbars(this.maxRotateIndexIncl);
   }
 
   @Override

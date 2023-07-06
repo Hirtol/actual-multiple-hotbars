@@ -74,7 +74,8 @@ public class HotbarInvState implements ImplementedInventory {
       return i;
     }
     itemStack.increment(j);
-    itemStack.setBobbingAnimationTime(0);
+    itemStack.setBobbingAnimationTime(5);
+    return i -= j;
   }
 
   public int getOccupiedSlotWithRoomForStack(ItemStack stack) {

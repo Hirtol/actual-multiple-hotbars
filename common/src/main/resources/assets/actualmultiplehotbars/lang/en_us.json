@@ -2,6 +2,7 @@
   "category.actualmultiplehotbars.keybinds": "Multi Hotbar Fabric",
   "key.actualmultiplehotbars.swap": "Rotate Hotbars",
   "key.actualmultiplehotbars.openui": "Open Hotbars UI",
+  "key.actualmultiplehotbars.increase_hotbars": "Add One Visible Hotbar",
   "screen.actualmultiplehotbars.ui.title": "Additional Hotbars",
 
   "text.autoconfig.actualmultiplehotbars.category.default":"Client Settings",

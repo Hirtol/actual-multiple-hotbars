@@ -16,15 +16,25 @@ public class KeyManager {
       GLFW.GLFW_KEY_X, "category.actualmultiplehotbars.keybinds");
   public static KeyBinding openHotbarKey = new KeyBinding("key.actualmultiplehotbars.openui", Type.KEYSYM,
       GLFW.GLFW_KEY_V, "category.actualmultiplehotbars.keybinds");
+  public static KeyBinding changeVisibleHotbars =
+      new KeyBinding("key.actualmultiplehotbars.increase_hotbars", Type.KEYSYM,
+          GLFW.GLFW_KEY_KP_MULTIPLY, "category.actualmultiplehotbars.keybinds");
 
   public static void initialise() {
     KeyMappingRegistry.register(rotateKey);
     KeyMappingRegistry.register(openHotbarKey);
+    KeyMappingRegistry.register(changeVisibleHotbars);
 
     ClientTickEvent.CLIENT_POST.register(client -> {
       var currentInstance = MultiClientState.getInstance();
       if (rotateKey.wasPressed()) {
         currentInstance.getProvider().rotate(client.player);
+      }
+
+      if (changeVisibleHotbars.wasPressed()) {
+        currentInstance.config().getClientSettings().numberOfAdditionalVisibleHotbars =
+            ((currentInstance.config().getClientSettings().numberOfAdditionalVisibleHotbars + 1) % (
+                currentInstance.config().getAdditionalHotbars() + 1));
       }
 
       if (openHotbarKey.wasPressed()) {

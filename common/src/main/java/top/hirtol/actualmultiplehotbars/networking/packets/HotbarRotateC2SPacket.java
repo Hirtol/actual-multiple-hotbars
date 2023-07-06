@@ -26,7 +26,7 @@ public class HotbarRotateC2SPacket implements C2SPacket {
   @Override
   public void handle(MinecraftServer server, ServerPlayerEntity serverPlayer) {
     var state = ServerState.getPlayerState(serverPlayer);
-    state.rotateVirtualHotbars(this.maxRotateIndexIncl);
+    state.rotateVisualHotbars(this.maxRotateIndexIncl);
   }
 
   @Override

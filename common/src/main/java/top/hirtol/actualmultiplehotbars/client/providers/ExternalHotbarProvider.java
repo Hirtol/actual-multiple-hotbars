@@ -6,8 +6,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import top.hirtol.actualmultiplehotbars.client.MultiClientState;
 import top.hirtol.actualmultiplehotbars.config.Config;
+import top.hirtol.actualmultiplehotbars.inventory.PlayerHotbarState;
 import top.hirtol.actualmultiplehotbars.networking.packets.HotbarRotateC2SPacket;
-import top.hirtol.actualmultiplehotbars.networking.packets.HotbarSwapC2SPacket;
+import top.hirtol.actualmultiplehotbars.networking.packets.HotbarSetVirtualC2SPacket;
 
 /**
  * Will use a seperately stored inventory (with say, n*9 capacity, where `n` is the amount of hotbars we allow). When we
@@ -45,8 +46,7 @@ public class ExternalHotbarProvider implements HotbarInventoryProvider {
 
   @Override
   public void swapRow(ClientPlayerEntity player, int row) {
-    var packet = new HotbarSwapC2SPacket(
-        MultiClientState.getInstance().getHotbarInventory().getVirtualState().currentVirtualHotbar, row);
+    var packet = new HotbarSetVirtualC2SPacket(PlayerHotbarState.MAIN_HOTBAR_INDEX, row);
 
     packet.send();
   }

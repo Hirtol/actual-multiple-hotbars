@@ -14,6 +14,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import top.hirtol.actualmultiplehotbars.client.MultiClientState;
 import top.hirtol.actualmultiplehotbars.inventory.PlayerHotbarState;
@@ -88,6 +89,23 @@ public abstract class InGameHudMixin extends DrawableHelper {
     }
   }
 
+  @Redirect(method = "renderHotbar", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;renderHotbarItem(IIFLnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/item/ItemStack;I)V", ordinal = 0))
+  private void replaceNormalHotbarItemRender(InGameHud instance, int x, int y, float tickDelta, PlayerEntity player,
+      ItemStack stack, int seed) {
+    int physicalHotbarIndex = MultiClientState.getInstance().getHotbarInventory().getVirtualState().getPhysicalFromVisual(0);
+    int inventoryIndex = PlayerHotbarState.toInventoryRowIndex(physicalHotbarIndex);
+    // `m` starts at `1`. This is a little fragile to depend on for iteration constant, but capturing locals seemed to cause issues.
+    int i = seed - 1;
+
+    if (physicalHotbarIndex == PlayerHotbarState.MAIN_HOTBAR_INDEX) {
+      ItemStack item = player.getInventory().getStack(inventoryIndex + i);
+      this.renderHotbarItem(x, y, tickDelta, player, item, seed);
+    } else {
+      ItemStack item = MultiClientState.getInstance().getProvider().getItem(inventoryIndex + i);
+      this.renderHotbarItem(x, y, tickDelta, player, item, seed);
+    }
+  }
+
   @Inject(method = "renderHotbar", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isEmpty()Z", ordinal = 1))
   private void renderHotbarItems(float tickDelta, MatrixStack matrices, CallbackInfo info) {
     var settings = MultiClientState.getInstance().config().getClientSettings();
@@ -95,13 +113,12 @@ public abstract class InGameHudMixin extends DrawableHelper {
     if (settings.reverseBars) {
       this.scaledHeight += (settings.shift * (settings.numberOfAdditionalVisibleHotbars));
     }
+    int m = 1;
 
-    for (int hotbarI = 0; hotbarI < settings.numberOfAdditionalVisibleHotbars; hotbarI++) {
-      int shift = (settings.shift * (settings.reverseBars ? settings.numberOfAdditionalVisibleHotbars - (hotbarI + 1): hotbarI + 1));
+    for (int hotbarI = 1; hotbarI <= settings.numberOfAdditionalVisibleHotbars; hotbarI++) {
+      int shift = (settings.shift * (settings.reverseBars ? settings.numberOfAdditionalVisibleHotbars - (hotbarI): hotbarI));
       int p = this.scaledHeight - 16 - 3 - shift;
-      int m = 1;
-
-      int physicalHotbarIndex = MultiClientState.getInstance().getHotbarInventory().getVirtualState().virtualPhysicalMappings.getInt(hotbarI + 1);
+      int physicalHotbarIndex = MultiClientState.getInstance().getHotbarInventory().getVirtualState().getPhysicalFromVisual(hotbarI);
       int inventoryIndex = PlayerHotbarState.toInventoryRowIndex(physicalHotbarIndex);
 
       if (physicalHotbarIndex == PlayerHotbarState.MAIN_HOTBAR_INDEX) {

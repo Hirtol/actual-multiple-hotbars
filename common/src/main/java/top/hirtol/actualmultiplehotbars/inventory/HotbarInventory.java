@@ -52,13 +52,22 @@ public class HotbarInventory extends HotbarInvState {
     return player;
   }
 
-  public void equipVirtualHotbar(int virtualHotbarIndex) {
-    if (virtualHotbarIndex < 0 || virtualHotbarIndex > this.getRowCount()) {
-      logger.warn("Player `{}` attempted to equip invalid hotbar `{}`", this.player.getName().getString(), virtualHotbarIndex);
+  public void linkVisualToVirtualHotbar(int fromVisual, int toVirtual) {
+    if (toVirtual < 0 || toVirtual > this.getRowCount() || fromVisual < 0
+        || fromVisual > this.getRowCount()) {
+      logger.warn("Player {} attempted to use invalid row swap index: `{}` - `{}`", player.getDisplayName().getString(),
+          fromVisual, toVirtual);
       return;
     }
 
-    this.swapVirtual(this.getVirtualState().currentVirtualHotbar, virtualHotbarIndex);
+    PlayerHotbarState state = this.getVirtualState();
+    int fromVirtual = state.visualVirtualMappings.getInt(fromVisual);
+
+    state.visualVirtualMappings.set(fromVisual, toVirtual);
+
+    if (fromVisual == PlayerHotbarState.MAIN_HOTBAR_INDEX || toVirtual == PlayerHotbarState.MAIN_HOTBAR_INDEX) {
+      this.swapVirtual(fromVirtual, toVirtual);
+    }
   }
 
   public void swapVirtual(int fromVirtual, int toVirtual) {
@@ -80,23 +89,38 @@ public class HotbarInventory extends HotbarInvState {
     ServerPacketHandler.swapRow(this.player, fromPhysical, toPhysical);
   }
 
-  public void rotateVirtualHotbars(int maxVirtualIndexExcl) {
-    if (maxVirtualIndexExcl < 0 || maxVirtualIndexExcl > this.getRowCount()) {
-      logger.warn("Player `{}` attempted to rotate invalid hotbar `{}`", this.player.getName().getString(), maxVirtualIndexExcl);
+  public void rotateVisualHotbars(int maxVisualIndexExl) {
+    if (maxVisualIndexExl < 0 || maxVisualIndexExl > this.getRowCount()) {
+      logger.warn("Player `{}` attempted to rotate invalid hotbar `{}`", this.player.getName().getString(), maxVisualIndexExl);
       return;
     }
 
     PlayerHotbarState state = this.getVirtualState();
+    int fromVisual = PlayerHotbarState.MAIN_HOTBAR_INDEX;
+    int toVisual = Math.max(maxVisualIndexExl - 1, PlayerHotbarState.MAIN_HOTBAR_INDEX);
 
-    int fromVirtual = PlayerHotbarState.MAIN_HOTBAR_INDEX;
-    int toVirtual = Math.max(maxVirtualIndexExcl - 1, PlayerHotbarState.MAIN_HOTBAR_INDEX);
-
-    this.swapVirtual(fromVirtual, toVirtual);
-
-    for (int i = 0; i < maxVirtualIndexExcl; i++) {
-//      state.virtualPhysicalMappings.set(i, (state.virtualPhysicalMappings.getInt(i) + 1) % maxVirtualIndexExcl);
+    int previous = state.visualVirtualMappings.getInt(0);
+    for (int i = 0; i < maxVisualIndexExl - 1; i++) {
+      int nextIndex = (state.visualVirtualMappings.getInt((i + 1) % maxVisualIndexExl));
+      state.visualVirtualMappings.set(i, nextIndex);
     }
 
-//    ServerPacketHandler.rotateRow(this.player, maxVirtualIndexExcl);
+    state.visualVirtualMappings.set(maxVisualIndexExl - 1, previous);
+
+    int fromVirtual = state.visualVirtualMappings.getInt(fromVisual);
+    int toVirtual = state.visualVirtualMappings.getInt(toVisual);
+
+    if (fromVirtual == toVirtual) {
+      // Possible when a player has assigned two visual hotbars to the same virtual one.
+      // In this case we should still mark the state as dirty as the bars *will* move visually, just not physically.
+      this.markDirty();
+    } else {
+      this.swapVirtual(fromVirtual, toVirtual);
+    }
+  }
+
+  public void resetMappingStates() {
+    this.getVirtualState().reset();
+    this.markDirty();
   }
 }

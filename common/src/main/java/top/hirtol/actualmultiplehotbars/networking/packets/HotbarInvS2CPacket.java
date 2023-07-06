@@ -27,8 +27,7 @@ public class HotbarInvS2CPacket implements S2CPacket {
 
   @Override
   public void handle(MinecraftClient client) {
-    client.executeSync(
-        () -> MultiClientState.getInstance().setHotbarInventory(this.inventory));
+        MultiClientState.getInstance().setHotbarInventory(this.inventory);
   }
 
   @Override
@@ -40,15 +39,17 @@ public class HotbarInvS2CPacket implements S2CPacket {
   public void write(PacketByteBuf buf) {
     buf.writeInt(inventory.getVirtualState().currentVirtualHotbar);
     buf.writeIntList(inventory.getVirtualState().virtualPhysicalMappings);
+    buf.writeIntList(inventory.getVirtualState().visualVirtualMappings);
     buf.writeCollection(inventory.getItems(), PacketByteBuf::writeItemStack);
   }
 
   public static HotbarInvS2CPacket read(PacketByteBuf buf) {
     int currentVirtualHotbar = buf.readInt();
     IntList virtualPhysicalMappings = buf.readIntList();
+    IntList visualVirtualMappings = buf.readIntList();
     DefaultedList<ItemStack> items = buf.readCollection(DefaultedList::ofSize, PacketByteBuf::readItemStack);
 
-    return new HotbarInvS2CPacket(new HotbarInvState(items, new PlayerHotbarState(currentVirtualHotbar, virtualPhysicalMappings)));
+    return new HotbarInvS2CPacket(new HotbarInvState(items, new PlayerHotbarState(currentVirtualHotbar, virtualPhysicalMappings, visualVirtualMappings)));
   }
 
   public HotbarInvState getInventory() {

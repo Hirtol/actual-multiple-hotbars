@@ -8,8 +8,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import top.hirtol.actualmultiplehotbars.networking.packets.HotbarInvS2CPacket;
 import top.hirtol.actualmultiplehotbars.networking.packets.HotbarRotateC2SPacket;
-import top.hirtol.actualmultiplehotbars.networking.packets.HotbarSwapC2SPacket;
+import top.hirtol.actualmultiplehotbars.networking.packets.HotbarSetVirtualC2SPacket;
 import top.hirtol.actualmultiplehotbars.networking.packets.OpenInvC2SPacket;
+import top.hirtol.actualmultiplehotbars.networking.packets.ResetVisualC2SPacket;
 import top.hirtol.actualmultiplehotbars.networking.packets.SyncS2CConfigPacket;
 
 public class PacketRegistry {
@@ -20,9 +21,10 @@ public class PacketRegistry {
    * Initialise all packet listeners relevant for the server.
    */
   public static void initialiseServer() {
-    SimpleNetwork.registerC2S(HotbarSwapC2SPacket.ID, HotbarSwapC2SPacket::read);
+    SimpleNetwork.registerC2S(HotbarSetVirtualC2SPacket.ID, HotbarSetVirtualC2SPacket::read);
     SimpleNetwork.registerC2S(HotbarRotateC2SPacket.ID, HotbarRotateC2SPacket::read);
     SimpleNetwork.registerC2S(OpenInvC2SPacket.ID, OpenInvC2SPacket::read);
+    SimpleNetwork.registerC2S(ResetVisualC2SPacket.ID, ResetVisualC2SPacket::read);
   }
 
   /**

@@ -35,7 +35,7 @@ public class HotbarInvState implements ImplementedInventory {
   }
 
   public int getColumnCount() {
-    return 9;
+    return PlayerHotbarState.VANILLA_HOTBAR_SIZE;
   }
 
   public int getRowCount() {
@@ -74,8 +74,7 @@ public class HotbarInvState implements ImplementedInventory {
       return i;
     }
     itemStack.increment(j);
-    itemStack.setBobbingAnimationTime(5);
-    return i -= j;
+    itemStack.setBobbingAnimationTime(0);
   }
 
   public int getOccupiedSlotWithRoomForStack(ItemStack stack) {

@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import top.hirtol.actualmultiplehotbars.client.MultiClientState;
 import top.hirtol.actualmultiplehotbars.config.Config;
+import top.hirtol.actualmultiplehotbars.inventory.HotbarInvState;
 import top.hirtol.actualmultiplehotbars.inventory.PlayerHotbarState;
 import top.hirtol.actualmultiplehotbars.networking.packets.HotbarRotateC2SPacket;
 import top.hirtol.actualmultiplehotbars.networking.packets.HotbarSetVirtualC2SPacket;
@@ -25,7 +26,6 @@ public class ExternalHotbarProvider implements HotbarInventoryProvider {
 
   private static final Logger logger = LoggerFactory.getLogger(ExternalHotbarProvider.class);
 
-  private int currentSwapIndex = 1;
   private Config config = MultiClientState.getInstance().config();
 
   @Override
@@ -45,40 +45,51 @@ public class ExternalHotbarProvider implements HotbarInventoryProvider {
   }
 
   @Override
-  public void swapRow(ClientPlayerEntity player, int row) {
-    var packet = new HotbarSetVirtualC2SPacket(PlayerHotbarState.MAIN_HOTBAR_INDEX, row);
+  public void swapRow(ClientPlayerEntity player, int virtualHotbarIndex) {
+    if (virtualHotbarIndex > (config.getAdditionalHotbars())) {
+      return;
+    }
+    this.preventBobAnimation(player, virtualHotbarIndex);
 
+    var packet = new HotbarSetVirtualC2SPacket(PlayerHotbarState.MAIN_HOTBAR_INDEX, virtualHotbarIndex);
     packet.send();
   }
 
   @Override
   public void rotate(ClientPlayerEntity player) {
-    var packet = new HotbarRotateC2SPacket(this.getMaxRowIndexExcl());
+    var packet = new HotbarRotateC2SPacket(this.getMaxRowIndexIncl());
+
+    int rowToEquip = MultiClientState.getInstance().getHotbarInventory().getVirtualState().visualVirtualMappings.getInt(
+        1 % config.getAdditionalHotbars());
+    this.preventBobAnimation(player, rowToEquip);
+
     packet.send();
   }
 
-  private int nextSwapIndex(int currentSwapIndex) {
-    if (getMaxRowIndexExcl() == currentSwapIndex) {
-      return 0;
-    } else {
-      return currentSwapIndex + 1;
-    }
-  }
-
-  private int previousSwapIndex(int currentSwapIndex) {
-    if (currentSwapIndex == 1) {
-      return getMaxRowIndexExcl();
-    } else {
-      return currentSwapIndex - 1;
-    }
-  }
-
-  private int getMaxRowIndexExcl() {
+  private int getMaxRowIndexIncl() {
     int additionalPossible = Math.max(this.config.getAdditionalHotbars() - 1, 0);
     int maxVisibleIndex = Math.max(this.config.getClientSettings().numberOfAdditionalVisibleHotbars, 0);
 
     return (this.config.getClientSettings().rotateBeyondVisible ?
         additionalPossible
-        : Math.min(additionalPossible, maxVisibleIndex)) + 1;
+        : Math.min(additionalPossible, maxVisibleIndex));
+  }
+
+  private void preventBobAnimation(ClientPlayerEntity player, int virtualRowToEquip) {
+    MultiClientState state = MultiClientState.getInstance();
+    HotbarInvState inventory = state.getHotbarInventory();
+    int physicalRow = inventory.getVirtualState().virtualPhysicalMappings.getInt(virtualRowToEquip);
+
+    // Update the playerScreenHandler to prevent bob-animations.
+    // The ClientPlayNetworkHandler sets these bob animations when a change to the hotbar is made.
+    // This seemed difficult to intercept for *just* the hotbars, so opted for this hack instead.
+    if (physicalRow != PlayerHotbarState.MAIN_HOTBAR_INDEX) {
+      int rowIndex = PlayerHotbarState.toInventoryRowIndex(physicalRow);
+
+      for (int i = 0; i < PlayerHotbarState.VANILLA_HOTBAR_SIZE; i++) {
+        int index = (rowIndex * PlayerHotbarState.VANILLA_HOTBAR_SIZE) + i;
+        player.playerScreenHandler.setStackInSlot(36 + i, player.playerScreenHandler.syncId, inventory.getStack(index));
+      }
+    }
   }
 }

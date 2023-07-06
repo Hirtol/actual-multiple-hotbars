@@ -9,6 +9,8 @@ import org.slf4j.LoggerFactory;
 public class PlayerHotbarState {
 
   public static final int MAIN_HOTBAR_INDEX = 0;
+  public static final int VANILLA_HOTBAR_SIZE = 9;
+
   private static final Logger logger = LoggerFactory.getLogger(PlayerHotbarState.class);
 
 

@@ -82,7 +82,6 @@ public class HotbarInventory extends HotbarInvState {
 
     state.virtualPhysicalMappings.set(fromVirtual, toPhysical);
     state.virtualPhysicalMappings.set(toVirtual, fromPhysical);
-    state.currentVirtualHotbar = toVirtual;
 
     ServerPacketHandler.swapRow(this.player, fromPhysical, toPhysical);
   }

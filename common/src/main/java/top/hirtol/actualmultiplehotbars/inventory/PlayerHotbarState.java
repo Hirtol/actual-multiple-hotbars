@@ -17,15 +17,8 @@ public class PlayerHotbarState {
   public IntList visualVirtualMappings;
   public IntList virtualPhysicalMappings;
 
-  /**
-   * The index of the currently virtual hotbar that is equipped by the player.
-   * <p>
-   * Index 0 is the default MC hotbar.
-   */
-  public int currentVirtualHotbar = MAIN_HOTBAR_INDEX;
-
   public PlayerHotbarState(int hotbarCount) {
-    this(0, new IntArrayList(hotbarCount), new IntArrayList(hotbarCount));
+    this(new IntArrayList(hotbarCount), new IntArrayList(hotbarCount));
 
     for (int i = 0; i < hotbarCount; i++) {
       this.virtualPhysicalMappings.add(i, i);
@@ -33,8 +26,7 @@ public class PlayerHotbarState {
     }
   }
 
-  public PlayerHotbarState(int currentVirtualHotbar, IntList hotbarMappings, IntList visualMappings) {
-    this.currentVirtualHotbar = currentVirtualHotbar;
+  public PlayerHotbarState(IntList hotbarMappings, IntList visualMappings) {
     this.virtualPhysicalMappings = hotbarMappings;
     this.visualVirtualMappings = visualMappings;
   }
@@ -56,22 +48,18 @@ public class PlayerHotbarState {
       this.virtualPhysicalMappings.set(i, i);
       this.visualVirtualMappings.set(i, i);
     }
-    this.currentVirtualHotbar = 0;
   }
 
   public void readNbt(NbtCompound nbt) {
     NbtCompound nestedNbt = nbt.getCompound("hotbarState");
 
-    this.currentVirtualHotbar = nestedNbt.getInt("currentVirtualIndex");
-
-    this.virtualPhysicalMappings = IntList.of(nestedNbt.getIntArray("hotbarMappings"));
-    this.visualVirtualMappings = IntList.of(nestedNbt.getIntArray("visualMappings"));
+    this.virtualPhysicalMappings = IntArrayList.of(nestedNbt.getIntArray("hotbarMappings"));
+    this.visualVirtualMappings = IntArrayList.of(nestedNbt.getIntArray("visualMappings"));
   }
 
   public NbtCompound writeNbt(NbtCompound nbt) {
     NbtCompound nestedNbt = new NbtCompound();
 
-    nestedNbt.putInt("currentVirtualIndex", this.currentVirtualHotbar);
     nestedNbt.putIntArray("hotbarMappings", this.virtualPhysicalMappings);
     nestedNbt.putIntArray("visualMappings", this.visualVirtualMappings);
 

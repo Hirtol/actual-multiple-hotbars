@@ -37,19 +37,17 @@ public class HotbarInvS2CPacket implements S2CPacket {
 
   @Override
   public void write(PacketByteBuf buf) {
-    buf.writeInt(inventory.getVirtualState().currentVirtualHotbar);
     buf.writeIntList(inventory.getVirtualState().virtualPhysicalMappings);
     buf.writeIntList(inventory.getVirtualState().visualVirtualMappings);
     buf.writeCollection(inventory.getItems(), PacketByteBuf::writeItemStack);
   }
 
   public static HotbarInvS2CPacket read(PacketByteBuf buf) {
-    int currentVirtualHotbar = buf.readInt();
     IntList virtualPhysicalMappings = buf.readIntList();
     IntList visualVirtualMappings = buf.readIntList();
     DefaultedList<ItemStack> items = buf.readCollection(DefaultedList::ofSize, PacketByteBuf::readItemStack);
 
-    return new HotbarInvS2CPacket(new HotbarInvState(items, new PlayerHotbarState(currentVirtualHotbar, virtualPhysicalMappings, visualVirtualMappings)));
+    return new HotbarInvS2CPacket(new HotbarInvState(items, new PlayerHotbarState(virtualPhysicalMappings, visualVirtualMappings)));
   }
 
   public HotbarInvState getInventory() {

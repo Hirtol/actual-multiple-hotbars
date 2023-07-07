@@ -2,6 +2,7 @@ package top.hirtol.actualmultiplehotbars;
 
 import dev.architectury.event.events.common.PlayerEvent;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import top.hirtol.actualmultiplehotbars.config.Config;
@@ -9,6 +10,7 @@ import top.hirtol.actualmultiplehotbars.inventory.HotbarInventory;
 import top.hirtol.actualmultiplehotbars.networking.PacketRegistry;
 import top.hirtol.actualmultiplehotbars.networking.packets.HotbarInvS2CPacket;
 import top.hirtol.actualmultiplehotbars.networking.packets.SyncS2CConfigPacket;
+import top.hirtol.actualmultiplehotbars.screenhandlers.ScreenHandlers;
 
 public class ActualHotbars {
 
@@ -17,6 +19,9 @@ public class ActualHotbars {
 
   public static void init() {
     Config.init();
+    PacketRegistry.initialiseServer();
+    ScreenHandlers.init();
+
     PlayerEvent.PLAYER_JOIN.register(player -> {
       // Keep config in-sync. WARNING -> This currently leaks memory, has to be a better way of doing this
       Config.onChange((configHolder, ConfigData) -> {
@@ -35,8 +40,11 @@ public class ActualHotbars {
       packet.send(player);
     });
 
-    PacketRegistry.initialiseServer();
 
     logger.info("Actual Multiple Hotbars has been initialised");
+  }
+
+  public static Identifier ID(String id) {
+    return new Identifier(ActualHotbars.MOD_ID, id);
   }
 }

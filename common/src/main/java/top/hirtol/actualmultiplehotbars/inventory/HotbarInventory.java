@@ -1,6 +1,6 @@
 package top.hirtol.actualmultiplehotbars.inventory;
 
-import net.minecraft.entity.player.PlayerEntity;
+import dev.architectury.registry.menu.MenuRegistry;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.SimpleNamedScreenHandlerFactory;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -33,19 +33,17 @@ public class HotbarInventory extends HotbarInvState {
     if (!this.player.world.isClient) {
       var state = ServerState.getServerState(this.player.getServer());
       state.markDirty();
-      
+
       var packet = new HotbarInvS2CPacket(this);
       packet.send(this.player);
     }
   }
 
-  public void openHandledScreen(PlayerEntity player) {
-    if (!player.world.isClient) {
-      var newScreen =
-          new SimpleNamedScreenHandlerFactory((syncId, inv, openPlayer) -> ScreenHandlers.createScreen(syncId, inv, this), Text.translatable("screen.actualmultiplehotbars.ui.title"));
-
-      player.openHandledScreen(newScreen);
-    }
+  public void openHandledScreen(ServerPlayerEntity player) {
+    var newScreen = new SimpleNamedScreenHandlerFactory(
+        (syncId, inv, openPlayer) -> ScreenHandlers.createScreen(syncId, inv, this),
+        Text.translatable("screen.actualmultiplehotbars.ui.title"));
+    MenuRegistry.openMenu(player, newScreen);
   }
 
   public ServerPlayerEntity getPlayer() {
@@ -91,7 +89,8 @@ public class HotbarInventory extends HotbarInvState {
 
   public void rotateVisualHotbars(int maxVisualIndexIncl) {
     if (maxVisualIndexIncl < 0 || maxVisualIndexIncl > this.getRowCount()) {
-      logger.warn("Player `{}` attempted to rotate invalid hotbar `{}`", this.player.getName().getString(), maxVisualIndexIncl);
+      logger.warn("Player `{}` attempted to rotate invalid hotbar `{}`", this.player.getName().getString(),
+          maxVisualIndexIncl);
       return;
     }
 

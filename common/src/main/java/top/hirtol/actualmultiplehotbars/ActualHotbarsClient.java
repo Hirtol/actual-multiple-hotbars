@@ -22,6 +22,9 @@ public class ActualHotbarsClient {
     ConfigSyncManager.initialise();
 
     KeyManager.initialise();
+  }
+
+  public static void initRegistries() {
     ScreenHandlers.initClient();
   }
 

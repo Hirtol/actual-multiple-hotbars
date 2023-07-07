@@ -40,10 +40,6 @@ allprojects {
         // for more information about repositories.
         maven { url "https://maven.shedaniel.me/" }
         maven { url "https://maven.terraformersmc.com/releases/" }
-        maven {
-            name = "CottonMC"
-            url = "https://server.bbkr.space/artifactory/libs-release"
-        }
     }
 
     tasks.withType(JavaCompile) {

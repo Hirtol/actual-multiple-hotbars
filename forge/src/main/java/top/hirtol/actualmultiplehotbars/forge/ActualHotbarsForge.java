@@ -38,7 +38,6 @@ public class ActualHotbarsForge {
     // Common Init
     ActualHotbars.init();
 
-//    DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> ActualHotbarsForgeClient::init);
     DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> {
       return () -> {
         ActualHotbarsForgeClient.onConstructor();

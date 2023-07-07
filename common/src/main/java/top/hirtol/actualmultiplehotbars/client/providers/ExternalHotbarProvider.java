@@ -67,7 +67,7 @@ public class ExternalHotbarProvider implements HotbarInventoryProvider {
   }
 
   private int getMaxRowIndexIncl() {
-    int additionalPossible = Math.max(this.config.getAdditionalHotbars() - 1, 0);
+    int additionalPossible = Math.max(this.config.getAdditionalHotbars(), 0);
     int maxVisibleIndex = Math.max(this.config.getClientSettings().numberOfAdditionalVisibleHotbars, 0);
 
     return (this.config.getClientSettings().rotateBeyondVisible ?

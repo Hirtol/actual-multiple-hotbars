@@ -65,7 +65,7 @@ public class PlayerHotbarState {
     this.currentVirtualHotbar = nestedNbt.getInt("currentVirtualIndex");
 
     this.virtualPhysicalMappings = IntList.of(nestedNbt.getIntArray("hotbarMappings"));
-    this.visualVirtualMappings = IntList.of(nestedNbt.getInt("visualMappings"));
+    this.visualVirtualMappings = IntList.of(nestedNbt.getIntArray("visualMappings"));
   }
 
   public NbtCompound writeNbt(NbtCompound nbt) {

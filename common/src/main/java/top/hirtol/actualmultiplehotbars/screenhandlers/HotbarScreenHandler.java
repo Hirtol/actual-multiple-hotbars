@@ -1,7 +1,9 @@
 package top.hirtol.actualmultiplehotbars.screenhandlers;
 
+import java.util.Objects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
@@ -9,7 +11,9 @@ import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import top.hirtol.actualmultiplehotbars.ActualHotbars;
+import top.hirtol.actualmultiplehotbars.client.MultiClientState;
 import top.hirtol.actualmultiplehotbars.inventory.HotbarInvState;
+import top.hirtol.actualmultiplehotbars.inventory.PlayerHotbarState;
 
 //GenericContainerScreenHandler
 public class HotbarScreenHandler extends ScreenHandler {
@@ -20,7 +24,8 @@ public class HotbarScreenHandler extends ScreenHandler {
   public HotbarInvState hotbarInventory;
 
   public HotbarScreenHandler(int syncId, PlayerInventory playerInventory) {
-    this(syncId, playerInventory, new HotbarInvState());
+    this(syncId, playerInventory,
+        Objects.requireNonNullElseGet(MultiClientState.getInstance().getHotbarInventory(), HotbarInvState::new));
   }
 
   public HotbarScreenHandler(int syncId, PlayerInventory playerInventory, HotbarInvState inventory) {
@@ -33,8 +38,13 @@ public class HotbarScreenHandler extends ScreenHandler {
     int i = (rows - 4) * 18;
 
     for (int j = 0; j < rows; ++j) {
+      int physicalIndex = inventory.getVirtualState().virtualPhysicalMappings.getInt(j + 1);
+      int inventoryRowIndex = PlayerHotbarState.toInventoryRowIndex(physicalIndex);
+      Inventory invToUse = physicalIndex == PlayerHotbarState.MAIN_HOTBAR_INDEX ? playerInventory : inventory;
+
       for (int k = 0; k < 9; ++k) {
-        this.addSlot(new Slot(inventory, k + j * 9, 8 + k * 18, 18 + j * 18));
+        int index = k + (inventoryRowIndex * inventory.getColumnCount());
+        this.addSlot(new Slot(invToUse, index, 8 + k * 18, 18 + j * 18));
       }
     }
 
@@ -45,7 +55,11 @@ public class HotbarScreenHandler extends ScreenHandler {
     }
 
     for (int j = 0; j < 9; ++j) {
-      this.addSlot(new Slot(playerInventory, j, 8 + j * 18, 161 + i));
+      int physicalIndex = inventory.getVirtualState().virtualPhysicalMappings.getInt(0);
+      int inventoryRowIndex = PlayerHotbarState.toInventoryRowIndex(physicalIndex);
+      Inventory invToUse = physicalIndex == PlayerHotbarState.MAIN_HOTBAR_INDEX ? playerInventory : inventory;
+      int index = j + (inventoryRowIndex * inventory.getColumnCount());
+      this.addSlot(new Slot(invToUse, index, 8 + j * 18, 161 + i));
     }
   }
 

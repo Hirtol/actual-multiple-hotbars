@@ -12,8 +12,12 @@ import top.hirtol.actualmultiplehotbars.networking.packets.OpenInvC2SPacket;
 public class KeyManager {
 
   private static final Logger logger = LoggerFactory.getLogger(KeyManager.class);
-  public static KeyBinding rotateKey = new KeyBinding("key.actualmultiplehotbars.swap", Type.KEYSYM,
+  public static KeyBinding rotateKey = new KeyBinding("key.actualmultiplehotbars.rotate", Type.KEYSYM,
       GLFW.GLFW_KEY_X, "category.actualmultiplehotbars.keybinds");
+
+  public static KeyBinding reverseRotateKey =
+      new KeyBinding("key.actualmultiplehotbars.rotate_reverse", Type.KEYSYM,
+          GLFW.GLFW_KEY_UNKNOWN, "category.actualmultiplehotbars.keybinds");
   public static KeyBinding openHotbarKey = new KeyBinding("key.actualmultiplehotbars.openui", Type.KEYSYM,
       GLFW.GLFW_KEY_V, "category.actualmultiplehotbars.keybinds");
   public static KeyBinding changeVisibleHotbars =
@@ -22,13 +26,18 @@ public class KeyManager {
 
   public static void initialise() {
     KeyMappingRegistry.register(rotateKey);
+    KeyMappingRegistry.register(reverseRotateKey);
     KeyMappingRegistry.register(openHotbarKey);
     KeyMappingRegistry.register(changeVisibleHotbars);
 
     ClientTickEvent.CLIENT_POST.register(client -> {
       var currentInstance = MultiClientState.getInstance();
+
       if (rotateKey.wasPressed()) {
         currentInstance.getProvider().rotate(client.player, false);
+      }
+      if (reverseRotateKey.wasPressed()) {
+        currentInstance.getProvider().rotate(client.player, true);
       }
 
       if (changeVisibleHotbars.wasPressed()) {

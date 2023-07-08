@@ -1,13 +1,13 @@
 package top.hirtol.actualmultiplehotbars.inventory;
 
-import dev.architectury.registry.menu.MenuRegistry;
+import me.shedaniel.architectury.registry.MenuRegistry;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.SimpleNamedScreenHandlerFactory;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.collection.DefaultedList;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import top.hirtol.actualmultiplehotbars.ServerPacketHandler;
 import top.hirtol.actualmultiplehotbars.networking.packets.HotbarInvS2CPacket;
 import top.hirtol.actualmultiplehotbars.screenhandlers.ScreenHandlers;
@@ -16,7 +16,7 @@ public class ServerHotbarInventory extends HotbarInventory {
 
   private final ServerPlayerEntity player;
 
-  private static final Logger logger = LoggerFactory.getLogger(PlayerHotbarState.class);
+  private static final Logger logger = LogManager.getLogger(PlayerHotbarState.class);
 
   public ServerHotbarInventory(DefaultedList<ItemStack> items, ServerPlayerEntity player, PlayerHotbarState state) {
     super(items, state);
@@ -30,18 +30,18 @@ public class ServerHotbarInventory extends HotbarInventory {
   @Override
   public void markDirty() {
     if (!this.player.world.isClient) {
-      var state = ServerInventoryManager.getManager(this.player.getServer());
+      ServerInventoryManager state = ServerInventoryManager.getManager(this.player.getServer());
       state.markDirty();
 
-      var packet = new HotbarInvS2CPacket(this);
+      HotbarInvS2CPacket packet = new HotbarInvS2CPacket(this);
       packet.send(this.player);
     }
   }
 
   public void openHandledScreen(ServerPlayerEntity player) {
-    var newScreen = new SimpleNamedScreenHandlerFactory(
+    SimpleNamedScreenHandlerFactory newScreen = new SimpleNamedScreenHandlerFactory(
         (syncId, inv, openPlayer) -> ScreenHandlers.createHotbarScreen(syncId, inv, this),
-        Text.translatable("screen.actualmultiplehotbars.ui.title"));
+        new TranslatableText("screen.actualmultiplehotbars.ui.title"));
     MenuRegistry.openMenu(player, newScreen);
   }
 
@@ -87,11 +87,12 @@ public class ServerHotbarInventory extends HotbarInventory {
 
   /**
    * Rotate the given range of hotbars (from visual 0..=maxVisualIndexIncl).
+   * <p>
+   * Will only shift the physical items of the current equipped hotbar and the hotbar to-be equipped. The remainder are
+   * merely visual moves.
    *
-   * Will only shift the physical items of the current equipped hotbar and the hotbar to-be equipped.
-   * The remainder are merely visual moves.
    * @param maxVisualIndexIncl The max index of the Visual hotbars to rotate.
-   * @param reverse Whether to rotate in reverse or not
+   * @param reverse            Whether to rotate in reverse or not
    */
   public void rotateVisualHotbars(int maxVisualIndexIncl, boolean reverse) {
     if (maxVisualIndexIncl < 0 || maxVisualIndexIncl > this.getRowCount()) {

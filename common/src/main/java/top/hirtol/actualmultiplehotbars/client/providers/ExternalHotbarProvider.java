@@ -2,8 +2,8 @@ package top.hirtol.actualmultiplehotbars.client.providers;
 
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.item.ItemStack;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import top.hirtol.actualmultiplehotbars.client.AMHClientState;
 import top.hirtol.actualmultiplehotbars.config.AMHConfig;
 import top.hirtol.actualmultiplehotbars.inventory.HotbarInventory;
@@ -25,13 +25,13 @@ import top.hirtol.actualmultiplehotbars.networking.packets.ResetVisualC2SPacket;
  */
 public class ExternalHotbarProvider implements HotbarInventoryProvider {
 
-  private static final Logger logger = LoggerFactory.getLogger(ExternalHotbarProvider.class);
+  private static final Logger logger = LogManager.getLogger(ExternalHotbarProvider.class);
 
   private final AMHConfig config = AMHConfig.getInstance();
 
   @Override
   public ItemStack getItem(int i) {
-    var inventory = AMHClientState.getInstance().getHotbarInventory();
+    HotbarInventory inventory = AMHClientState.getInstance().getHotbarInventory();
 
     if (inventory != null) {
       return inventory.getStack(i);
@@ -53,13 +53,14 @@ public class ExternalHotbarProvider implements HotbarInventoryProvider {
     }
     this.preventBobAnimation(player, virtualHotbarIndex);
 
-    var packet = new HotbarSetVirtualC2SPacket(PlayerHotbarState.MAIN_HOTBAR_INDEX, virtualHotbarIndex);
+    HotbarSetVirtualC2SPacket
+        packet = new HotbarSetVirtualC2SPacket(PlayerHotbarState.MAIN_HOTBAR_INDEX, virtualHotbarIndex);
     packet.send();
   }
 
   @Override
   public void rotate(ClientPlayerEntity player, boolean reverse) {
-    var packet = new HotbarRotateC2SPacket(this.getMaxRowIndexIncl(), reverse);
+    HotbarRotateC2SPacket packet = new HotbarRotateC2SPacket(this.getMaxRowIndexIncl(), reverse);
     // Prevent item bob animation on equip.
     PlayerHotbarState state = AMHClientState.getInstance().getHotbarInventory().getVirtualState();
     int visualRowToEquip = reverse ? config.getClientSettings().additionalVisibleHotbars
@@ -93,7 +94,7 @@ public class ExternalHotbarProvider implements HotbarInventoryProvider {
 
       for (int i = 0; i < PlayerHotbarState.VANILLA_HOTBAR_SIZE; i++) {
         int index = (rowIndex * PlayerHotbarState.VANILLA_HOTBAR_SIZE) + i;
-        player.playerScreenHandler.setStackInSlot(36 + i, player.playerScreenHandler.syncId, inventory.getStack(index));
+        player.playerScreenHandler.setStackInSlot(36 + i, inventory.getStack(index));
       }
     }
   }

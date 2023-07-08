@@ -74,7 +74,6 @@ public interface ImplementedInventory extends Inventory {
    */
   @Override
   default ItemStack removeStack(int slot, int count) {
-    ActualHotbars.logger.warn("HEYYSS");
     ItemStack result = Inventories.splitStack(getItems(), slot, count);
     if (!result.isEmpty()) {
       markDirty();
@@ -88,7 +87,6 @@ public interface ImplementedInventory extends Inventory {
    */
   @Override
   default ItemStack removeStack(int slot) {
-    ActualHotbars.logger.warn("HEYYSSSSS");
     return Inventories.removeStack(getItems(), slot);
   }
 

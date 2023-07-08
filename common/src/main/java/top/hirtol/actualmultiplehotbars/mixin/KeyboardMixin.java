@@ -5,9 +5,9 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Keyboard;
 import net.minecraft.client.MinecraftClient;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.lwjgl.glfw.GLFW;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -16,12 +16,13 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import top.hirtol.actualmultiplehotbars.client.AMHClientState;
 import top.hirtol.actualmultiplehotbars.config.AMHConfig;
+import top.hirtol.actualmultiplehotbars.inventory.PlayerHotbarState;
 
 @Environment(EnvType.CLIENT)
 @Mixin(Keyboard.class)
 public abstract class KeyboardMixin {
 
-  private static final Logger logger = LoggerFactory.getLogger(KeyboardMixin.class);
+  private static final Logger logger = LogManager.getLogger(KeyboardMixin.class);
 
   @Final
   @Shadow
@@ -29,7 +30,7 @@ public abstract class KeyboardMixin {
 
   @Inject(method = "onKey", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/InputUtil;fromKeyCode(II)Lnet/minecraft/client/util/InputUtil$Key;"), cancellable = true)
   private void renderHotbarFrame(long window, int key, int scancode, int action, int modifiers, CallbackInfo ci) {
-    var config = AMHConfig.getInstance();
+    AMHConfig config = AMHConfig.getInstance();
     // If control isn't pressed just ignore
     if (modifiers == 0 || action != GLFW.GLFW_PRESS) {
       return;
@@ -48,7 +49,7 @@ public abstract class KeyboardMixin {
       }
 
       if (rowToEquip == 8) {
-        var state = AMHClientState.getInstance().getHotbarInventory().getVirtualState();
+        PlayerHotbarState state = AMHClientState.getInstance().getHotbarInventory().getVirtualState();
         for (int i = 0; i < 4; i++) {
           System.out.println("Visual: " + i + " - Virtual: " + state.visualVirtualMappings.getInt(i) + " - Physical: "
                              + state.virtualPhysicalMappings.getInt(state.visualVirtualMappings.getInt(i)));

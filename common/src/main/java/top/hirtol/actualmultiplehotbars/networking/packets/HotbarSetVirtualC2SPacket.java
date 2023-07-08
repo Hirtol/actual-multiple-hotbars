@@ -4,16 +4,17 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import top.hirtol.actualmultiplehotbars.ActualHotbars;
+import top.hirtol.actualmultiplehotbars.inventory.ServerHotbarInventory;
 import top.hirtol.actualmultiplehotbars.inventory.ServerInventoryManager;
 import top.hirtol.actualmultiplehotbars.networking.C2SPacket;
 
 public class HotbarSetVirtualC2SPacket implements C2SPacket {
 
   public static final Identifier ID = new Identifier(ActualHotbars.MOD_ID, "external_hotbar_swap");
-  private static final Logger logger = LoggerFactory.getLogger(HotbarSetVirtualC2SPacket.class);
+  private static final Logger logger = LogManager.getLogger(HotbarSetVirtualC2SPacket.class);
 
   public int virtualIndex;
   public int visualIndex;
@@ -33,7 +34,7 @@ public class HotbarSetVirtualC2SPacket implements C2SPacket {
 
   @Override
   public void handle(MinecraftServer server, ServerPlayerEntity serverPlayer) {
-    var state = ServerInventoryManager.getPlayerState(serverPlayer);
+    ServerHotbarInventory state = ServerInventoryManager.getPlayerState(serverPlayer);
     state.linkVisualToVirtualHotbar(this.visualIndex, this.virtualIndex);
   }
 

@@ -3,15 +3,15 @@ package top.hirtol.actualmultiplehotbars.inventory;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
 import net.minecraft.nbt.NbtCompound;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class PlayerHotbarState {
 
   public static final int MAIN_HOTBAR_INDEX = 0;
   public static final int VANILLA_HOTBAR_SIZE = 9;
 
-  private static final Logger logger = LoggerFactory.getLogger(PlayerHotbarState.class);
+  private static final Logger logger = LogManager.getLogger(PlayerHotbarState.class);
 
   public IntList visualVirtualMappings;
   public IntList virtualPhysicalMappings;
@@ -44,8 +44,8 @@ public class PlayerHotbarState {
   public void readNbt(NbtCompound nbt) {
     NbtCompound nestedNbt = nbt.getCompound("hotbarState");
 
-    this.virtualPhysicalMappings = IntArrayList.of(nestedNbt.getIntArray("hotbarMappings"));
-    this.visualVirtualMappings = IntArrayList.of(nestedNbt.getIntArray("visualMappings"));
+    this.virtualPhysicalMappings = IntArrayList.wrap(nestedNbt.getIntArray("hotbarMappings"));
+    this.visualVirtualMappings = IntArrayList.wrap(nestedNbt.getIntArray("visualMappings"));
   }
 
   public NbtCompound writeNbt(NbtCompound nbt) {

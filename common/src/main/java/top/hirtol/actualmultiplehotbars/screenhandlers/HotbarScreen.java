@@ -1,6 +1,7 @@
 package top.hirtol.actualmultiplehotbars.screenhandlers;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.gui.screen.ingame.GenericContainerScreen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.screen.ingame.ScreenHandlerProvider;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -9,8 +10,8 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import top.hirtol.actualmultiplehotbars.ActualHotbars;
 import top.hirtol.actualmultiplehotbars.client.KeyManager;
 import top.hirtol.actualmultiplehotbars.client.AMHClientState;
@@ -19,7 +20,7 @@ import top.hirtol.actualmultiplehotbars.client.AMHClientState;
 public class HotbarScreen extends HandledScreen<HotbarScreenHandler>
     implements ScreenHandlerProvider<HotbarScreenHandler> {
 
-  private static final Logger logger = LoggerFactory.getLogger(HotbarScreen.class);
+  private static final Logger logger = LogManager.getLogger(HotbarScreen.class);
   private static final Identifier TEXTURE = ActualHotbars.ID("textures/gui/josh_container.png");
 
   private final int rows;
@@ -47,7 +48,7 @@ public class HotbarScreen extends HandledScreen<HotbarScreenHandler>
 
   @Override
   protected void drawForeground(MatrixStack matrices, int mouseX, int mouseY) {
-    this.textRenderer.draw(matrices, this.playerInventoryTitle, (float) this.playerInventoryTitleX,
+    this.textRenderer.draw(matrices, this.playerInventory.getDisplayName(), (float) this.playerInventoryTitleX,
         (float) this.playerInventoryTitleY, 0x404040);
   }
 
@@ -60,8 +61,7 @@ public class HotbarScreen extends HandledScreen<HotbarScreenHandler>
 
   @Override
   protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
-    RenderSystem.setShader(GameRenderer::getPositionTexShader);
-    RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+    RenderSystem.color4f(1.0f, 1.0f, 1.0f, 1.0f);
     int i = (this.width - this.backgroundWidth) / 2;
     int j = (this.height - this.backgroundHeight) / 2;
 
@@ -76,7 +76,8 @@ public class HotbarScreen extends HandledScreen<HotbarScreenHandler>
           (j + heightAddition + 8 + (k * this.hotbarHeight)), color);
     }
 
-    RenderSystem.setShaderTexture(0, TEXTURE);
+    this.client.getTextureManager().bindTexture(TEXTURE);
+
     // Render the player's inventory first
     this.drawTexture(matrices, i, j + this.rows * this.hotbarHeight + 17, 0, 126, this.backgroundWidth, 96);
     // Now draw the hotbar inventories
@@ -90,7 +91,7 @@ public class HotbarScreen extends HandledScreen<HotbarScreenHandler>
       ClientPlayerEntity playerEntity = this.client.player;
 
       if (playerEntity != null) {
-        this.close();
+        this.onClose();
       }
       return true;
     }

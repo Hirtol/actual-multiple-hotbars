@@ -4,8 +4,8 @@ import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.ConfigHolder;
 import net.minecraft.util.ActionResult;
 import org.jetbrains.annotations.Nullable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import top.hirtol.actualmultiplehotbars.client.providers.ExternalHotbarProvider;
 import top.hirtol.actualmultiplehotbars.client.providers.HotbarInventoryProvider;
 import top.hirtol.actualmultiplehotbars.config.AMHConfigData;
@@ -14,7 +14,7 @@ import top.hirtol.actualmultiplehotbars.inventory.HotbarInventory;
 
 public class AMHClientState {
 
-  private static final Logger logger = LoggerFactory.getLogger(AMHClientState.class);
+  private static final Logger logger = LogManager.getLogger(AMHClientState.class);
   private static final AMHClientState INSTANCE = new AMHClientState();
 
   private HotbarInventoryProvider provider;
@@ -42,9 +42,7 @@ public class AMHClientState {
   }
 
   private void initialiseProvider(InventoryProvider provider) {
-    this.provider = switch (provider) {
-      case HotbarInventory -> new ExternalHotbarProvider();
-    };
+    this.provider = new ExternalHotbarProvider();
   }
 
   public HotbarInventoryProvider getProvider() {

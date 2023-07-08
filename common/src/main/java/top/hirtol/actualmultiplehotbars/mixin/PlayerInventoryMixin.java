@@ -5,8 +5,8 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -15,6 +15,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
+import top.hirtol.actualmultiplehotbars.inventory.HotbarInventory;
+import top.hirtol.actualmultiplehotbars.inventory.ServerHotbarInventory;
 import top.hirtol.actualmultiplehotbars.inventory.ServerInventoryManager;
 import top.hirtol.actualmultiplehotbars.client.AMHClientState;
 import top.hirtol.actualmultiplehotbars.config.AMHConfig;
@@ -22,7 +24,7 @@ import top.hirtol.actualmultiplehotbars.config.AMHConfig;
 @Mixin(PlayerInventory.class)
 public abstract class PlayerInventoryMixin {
 
-  private static final Logger logger = LoggerFactory.getLogger(PlayerInventoryMixin.class);
+  private static final Logger logger = LogManager.getLogger(PlayerInventoryMixin.class);
 
   @Final
   @Shadow
@@ -35,8 +37,8 @@ public abstract class PlayerInventoryMixin {
       at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerInventory;addStack(ILnet/minecraft/item/ItemStack;)I"),
       locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
   private void preferExtraHotbarPickup(ItemStack stack, CallbackInfoReturnable<Integer> cir, int i) {
-    var config = AMHConfig.getInstance();
-    var hotbar = ServerInventoryManager.getPlayerState(player);
+    AMHConfig config = AMHConfig.getInstance();
+    ServerHotbarInventory hotbar = ServerInventoryManager.getPlayerState(player);
 
     if (hotbar != null) {
       // Check if this pickup would've gone into the player's main hotbar. If so, allow it if the config is set.
@@ -45,7 +47,7 @@ public abstract class PlayerInventoryMixin {
         return;
       }
 
-      var slot = hotbar.getOccupiedSlotWithRoomForStack(stack);
+      int slot = hotbar.getOccupiedSlotWithRoomForStack(stack);
 
       if (slot != -1) {
         cir.setReturnValue(hotbar.addStackTillMax(slot, stack));
@@ -62,7 +64,7 @@ public abstract class PlayerInventoryMixin {
 
   @Inject(method = "updateItems", at = @At(value = "HEAD"))
   private void updateHotbarItems(CallbackInfo ci) {
-    var hotbar = ServerInventoryManager.getPlayerState(player);
+    ServerHotbarInventory hotbar = ServerInventoryManager.getPlayerState(player);
 
     if (hotbar != null) {
       for (int i = 0; i < hotbar.getItems().size(); ++i) {
@@ -76,7 +78,7 @@ public abstract class PlayerInventoryMixin {
 
   @Inject(method = "scrollInHotbar", at = @At(value = "HEAD"))
   private void allowScrollingToNextBar(double scrollAmount, CallbackInfo ci) {
-    var hotbar = AMHClientState.getInstance().getHotbarInventory();
+    HotbarInventory hotbar = AMHClientState.getInstance().getHotbarInventory();
 
     if (AMHConfig.getInstance().getClientSettings().allowScrollSwap && hotbar != null
         && this.player.world.isClient) {

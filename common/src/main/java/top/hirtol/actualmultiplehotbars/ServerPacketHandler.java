@@ -2,21 +2,22 @@ package top.hirtol.actualmultiplehotbars;
 
 import java.util.ArrayList;
 import java.util.List;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import top.hirtol.actualmultiplehotbars.inventory.ServerHotbarInventory;
 import top.hirtol.actualmultiplehotbars.inventory.ServerInventoryManager;
 
 public class ServerPacketHandler {
 
-  private static final Logger logger = LoggerFactory.getLogger(ServerPacketHandler.class);
+  private static final Logger logger = LogManager.getLogger(ServerPacketHandler.class);
 
   public static void swapRow(ServerPlayerEntity player, int fromHotbarIndex, int toHotbarIndex) {
-    var state = ServerInventoryManager.getPlayerState(player);
-    var playerInv = player.getInventory();
-
+    ServerHotbarInventory state = ServerInventoryManager.getPlayerState(player);
+    PlayerInventory playerInv = player.inventory;
     if (toHotbarIndex < 0 || toHotbarIndex > state.getRowCount() || fromHotbarIndex < 0
         || fromHotbarIndex > state.getRowCount()) {
       logger.warn("Player {} attempted to use invalid row swap index: `{}` - `{}`", player.getDisplayName().getString(),

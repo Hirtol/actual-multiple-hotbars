@@ -1,13 +1,13 @@
 package top.hirtol.actualmultiplehotbars.fabric;
 
 import net.fabricmc.api.ClientModInitializer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import top.hirtol.actualmultiplehotbars.ActualHotbarsClient;
 
 public class ActualHotbarsFabricClient implements ClientModInitializer {
 
-  private static final Logger logger = LoggerFactory.getLogger(ActualHotbarsFabricClient.class);
+  private static final Logger logger = LogManager.getLogger(ActualHotbarsFabricClient.class);
 
   @Override
   public void onInitializeClient() {

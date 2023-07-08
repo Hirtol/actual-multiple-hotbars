@@ -60,8 +60,8 @@ public class HotbarInventory implements ImplementedInventory {
     ItemStack itemStack = this.getStack(slot);
     if (itemStack.isEmpty()) {
       itemStack = new ItemStack(item, 0);
-      if (stack.hasNbt()) {
-        itemStack.setNbt(stack.getNbt().copy());
+      if (stack.hasTag()) {
+        itemStack.setTag(stack.getTag().copy());
       }
       this.setStack(slot, itemStack);
     }
@@ -75,7 +75,6 @@ public class HotbarInventory implements ImplementedInventory {
       return i;
     }
     itemStack.increment(j);
-    itemStack.setBobbingAnimationTime(5);
     return i -= j;
   }
 
@@ -88,6 +87,10 @@ public class HotbarInventory implements ImplementedInventory {
   }
 
   private boolean canStackAddMore(ItemStack existingStack, ItemStack stack) {
-    return !existingStack.isEmpty() && ItemStack.canCombine(existingStack, stack) && existingStack.isStackable() && existingStack.getCount() < existingStack.getMaxCount() && existingStack.getCount() < this.getMaxCountPerStack();
+    return !existingStack.isEmpty() && this.areItemsEqual(existingStack, stack) && existingStack.isStackable() && existingStack.getCount() < existingStack.getMaxCount() && existingStack.getCount() < this.getMaxCountPerStack();
+  }
+
+  private boolean areItemsEqual(ItemStack stack1, ItemStack stack2) {
+    return stack1.getItem() == stack2.getItem() && ItemStack.areTagsEqual(stack1, stack2);
   }
 }

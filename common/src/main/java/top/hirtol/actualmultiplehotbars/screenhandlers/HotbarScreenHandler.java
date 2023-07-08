@@ -1,6 +1,5 @@
 package top.hirtol.actualmultiplehotbars.screenhandlers;
 
-import java.util.Objects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -8,8 +7,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.util.Identifier;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import top.hirtol.actualmultiplehotbars.ActualHotbars;
 import top.hirtol.actualmultiplehotbars.client.AMHClientState;
 import top.hirtol.actualmultiplehotbars.inventory.HotbarInventory;
@@ -18,14 +17,15 @@ import top.hirtol.actualmultiplehotbars.inventory.PlayerHotbarState;
 //GenericContainerScreenHandler
 public class HotbarScreenHandler extends ScreenHandler {
 
-  private static final Logger logger = LoggerFactory.getLogger(HotbarScreenHandler.class);
+  private static final Logger logger = LogManager.getLogger(HotbarScreenHandler.class);
   public static final Identifier HOTBAR_SCREEN_ID = ActualHotbars.ID("hotbar_screen_handler");
 
   public HotbarInventory hotbarInventory;
 
   public HotbarScreenHandler(int syncId, PlayerInventory playerInventory) {
     this(syncId, playerInventory,
-        Objects.requireNonNullElseGet(AMHClientState.getInstance().getHotbarInventory(), HotbarInventory::new));
+        AMHClientState.getInstance().getHotbarInventory() == null ? new HotbarInventory()
+            : AMHClientState.getInstance().getHotbarInventory());
   }
 
   public HotbarScreenHandler(int syncId, PlayerInventory playerInventory, HotbarInventory inventory) {

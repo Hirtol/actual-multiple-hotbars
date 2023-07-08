@@ -54,7 +54,9 @@ public class AMHConfigData implements ConfigData {
 
     public int shift = 21;
 
-    public int numberOfAdditionalVisibleHotbars = 1;
+    @ConfigEntry.BoundedDiscrete(min = 0, max = 6)
+    @ConfigEntry.Gui.RequiresRestart
+    public int additionalVisibleHotbars = 1;
 
     /**
      * When `true` will allow the 'rotate hotbar' hotkey to rotate into hotbars which are not current visible in
@@ -71,15 +73,15 @@ public class AMHConfigData implements ConfigData {
 
     @ConfigEntry.Gui.Tooltip(count = 2)
     public ModifierKey swapModifierKey = ModifierKey.Control;
-    @ConfigEntry.Gui.Tooltip(count = 2)
-    public ModifierKey secondaryEquipKey = ModifierKey.Alt;
 
     @ConfigEntry.Category("Provider")
     @ConfigEntry.Gui.Tooltip
     public InventoryProvider provider = InventoryProvider.HotbarInventory;
 
+    public boolean debugMode = false;
+
     public int totalHotbars() {
-      return 1 + this.numberOfAdditionalVisibleHotbars;
+      return 1 + this.additionalVisibleHotbars;
     }
   }
 
@@ -109,9 +111,9 @@ public class AMHConfigData implements ConfigData {
     int maxVisibleHotbars = this.client.provider == InventoryProvider.HotbarInventory ?
         this.serverSettings.additionalHotbars : 3; // Minecraft default inventory size
 
-    if (this.client.numberOfAdditionalVisibleHotbars > maxVisibleHotbars) {
+    if (this.client.additionalVisibleHotbars > maxVisibleHotbars) {
       logger.warn("Attempt to display more additional hotbars than available");
-      this.client.numberOfAdditionalVisibleHotbars = maxVisibleHotbars;
+      this.client.additionalVisibleHotbars = maxVisibleHotbars;
     }
   }
 }

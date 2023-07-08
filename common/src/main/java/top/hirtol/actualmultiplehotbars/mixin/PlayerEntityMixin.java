@@ -5,7 +5,6 @@ import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.world.GameRules;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +14,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import top.hirtol.actualmultiplehotbars.ServerState;
+import top.hirtol.actualmultiplehotbars.inventory.ServerInventoryManager;
 
 @Mixin(PlayerEntity.class)
 public abstract class PlayerEntityMixin {
@@ -37,7 +36,7 @@ public abstract class PlayerEntityMixin {
         return;
       }
 
-      var hotbarInv = ServerState.getPlayerState(inventory.player);
+      var hotbarInv = ServerInventoryManager.getPlayerState(inventory.player);
       logger.trace("Dropping additional hotbars for player {} at {}", inventory.player.getDisplayName().getString(), inventory.player.getBlockPos());
 
       for (int i = 0; i < hotbarInv.getItems().size(); ++i) {

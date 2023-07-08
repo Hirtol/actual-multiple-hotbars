@@ -1,4 +1,4 @@
-package top.hirtol.actualmultiplehotbars;
+package top.hirtol.actualmultiplehotbars.inventory;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -10,12 +10,11 @@ import net.minecraft.world.PersistentState;
 import net.minecraft.world.PersistentStateManager;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import top.hirtol.actualmultiplehotbars.inventory.HotbarInventory;
-import top.hirtol.actualmultiplehotbars.inventory.HotbarInvState;
+import top.hirtol.actualmultiplehotbars.ActualHotbars;
 
-public class ServerState extends PersistentState {
+public class ServerInventoryManager extends PersistentState {
 
-  public HashMap<UUID, HotbarInvState> players = new HashMap<>();
+  public HashMap<UUID, HotbarInventory> players = new HashMap<>();
 
   @Override
   public NbtCompound writeNbt(NbtCompound nbt) {
@@ -33,21 +32,21 @@ public class ServerState extends PersistentState {
     return nbt;
   }
 
-  public static ServerState getServerState(MinecraftServer server) {
+  public static ServerInventoryManager getManager(MinecraftServer server) {
     PersistentStateManager persistentStateManager = server.getWorld(World.OVERWORLD).getPersistentStateManager();
 
     return persistentStateManager.getOrCreate(
-        ServerState::createFromNbt,
-        ServerState::new,
+        ServerInventoryManager::createFromNbt,
+        ServerInventoryManager::new,
         ActualHotbars.MOD_ID);
   }
 
-  public static ServerState createFromNbt(NbtCompound tag) {
-    ServerState serverState = new ServerState();
+  public static ServerInventoryManager createFromNbt(NbtCompound tag) {
+    ServerInventoryManager serverState = new ServerInventoryManager();
 
     NbtCompound playersTag = tag.getCompound("players");
     playersTag.getKeys().forEach(key -> {
-      HotbarInvState playerState = new HotbarInvState();
+      HotbarInventory playerState = new HotbarInventory();
       playerState.readNbt(playersTag.getCompound(key));
 
       UUID uuid = UUID.fromString(key);
@@ -58,20 +57,20 @@ public class ServerState extends PersistentState {
   }
 
   /**
-   * Get the player's hotbar inventory if we're currently running on the server, and the player has a modded client.
+   * Get the player's hotbar inventory if we're currently running on the server.
    *
    * Otherwise, `null` is returned.
    * @param player The player to examine
    * @return {@code null} if not running on the server, otherwise the player's additional hotbars.
    */
   @Nullable
-  public static HotbarInventory getPlayerState(PlayerEntity player) {
+  public static ServerHotbarInventory getPlayerState(PlayerEntity player) {
     if (player.world.getServer() != null) {
-      ServerState serverState = getServerState(player.world.getServer());
+      ServerInventoryManager serverState = getManager(player.world.getServer());
 
-      var partial = serverState.players.computeIfAbsent(player.getUuid(), uuid -> new HotbarInvState());
+      var partial = serverState.players.computeIfAbsent(player.getUuid(), uuid -> new HotbarInventory());
 
-      return new HotbarInventory(partial, (ServerPlayerEntity) player);
+      return new ServerHotbarInventory(partial, (ServerPlayerEntity) player);
     } else {
       return null;
     }

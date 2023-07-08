@@ -7,6 +7,7 @@ import net.minecraft.client.util.InputUtil.Type;
 import org.lwjgl.glfw.GLFW;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import top.hirtol.actualmultiplehotbars.config.AMHConfig;
 import top.hirtol.actualmultiplehotbars.networking.packets.OpenInvC2SPacket;
 
 public class KeyManager {
@@ -31,7 +32,8 @@ public class KeyManager {
     KeyMappingRegistry.register(changeVisibleHotbars);
 
     ClientTickEvent.CLIENT_POST.register(client -> {
-      var currentInstance = MultiClientState.getInstance();
+      var currentInstance = AMHClientState.getInstance();
+      var config = AMHConfig.getInstance();
 
       if (rotateKey.wasPressed()) {
         currentInstance.getProvider().rotate(client.player, false);
@@ -41,9 +43,9 @@ public class KeyManager {
       }
 
       if (changeVisibleHotbars.wasPressed()) {
-        currentInstance.config().getClientSettings().numberOfAdditionalVisibleHotbars =
-            ((currentInstance.config().getClientSettings().numberOfAdditionalVisibleHotbars + 1) % (
-                currentInstance.config().getAdditionalHotbars() + 1));
+        config.getClientSettings().additionalVisibleHotbars =
+            ((config.getClientSettings().additionalVisibleHotbars + 1) % (
+                config.getAdditionalHotbars() + 1));
       }
 
       if (openHotbarKey.wasPressed()) {

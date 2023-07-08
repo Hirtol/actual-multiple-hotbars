@@ -6,7 +6,7 @@ import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import top.hirtol.actualmultiplehotbars.config.AMHConfigData.ServerSettings;
-import top.hirtol.actualmultiplehotbars.config.Config;
+import top.hirtol.actualmultiplehotbars.config.AMHConfig;
 import top.hirtol.actualmultiplehotbars.ActualHotbars;
 import top.hirtol.actualmultiplehotbars.networking.S2CPacket;
 
@@ -46,6 +46,6 @@ public class SyncS2CConfigPacket implements S2CPacket {
 
   @Override
   public void handle(MinecraftClient client) {
-    client.executeSync(() -> Config.getInstance().setRemoteSettings(this.config));
+    client.executeSync(() -> AMHConfig.getInstance().setRemoteSettings(this.config));
   }
 }

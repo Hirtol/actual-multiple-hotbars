@@ -9,8 +9,8 @@ import net.minecraft.util.collection.DefaultedList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import top.hirtol.actualmultiplehotbars.ActualHotbars;
-import top.hirtol.actualmultiplehotbars.client.MultiClientState;
-import top.hirtol.actualmultiplehotbars.inventory.HotbarInvState;
+import top.hirtol.actualmultiplehotbars.client.AMHClientState;
+import top.hirtol.actualmultiplehotbars.inventory.HotbarInventory;
 import top.hirtol.actualmultiplehotbars.inventory.PlayerHotbarState;
 import top.hirtol.actualmultiplehotbars.networking.S2CPacket;
 
@@ -19,15 +19,15 @@ public class HotbarInvS2CPacket implements S2CPacket {
   public static final Identifier ID = new Identifier(ActualHotbars.MOD_ID, "hotbar_sync");
   private static final Logger logger = LoggerFactory.getLogger(HotbarInvS2CPacket.class);
 
-  private HotbarInvState inventory;
+  private HotbarInventory inventory;
 
-  public HotbarInvS2CPacket(HotbarInvState inventory) {
+  public HotbarInvS2CPacket(HotbarInventory inventory) {
     this.inventory = inventory;
   }
 
   @Override
   public void handle(MinecraftClient client) {
-        MultiClientState.getInstance().setHotbarInventory(this.inventory);
+        AMHClientState.getInstance().setHotbarInventory(this.inventory);
   }
 
   @Override
@@ -47,10 +47,10 @@ public class HotbarInvS2CPacket implements S2CPacket {
     IntList visualVirtualMappings = buf.readIntList();
     DefaultedList<ItemStack> items = buf.readCollection(DefaultedList::ofSize, PacketByteBuf::readItemStack);
 
-    return new HotbarInvS2CPacket(new HotbarInvState(items, new PlayerHotbarState(virtualPhysicalMappings, visualVirtualMappings)));
+    return new HotbarInvS2CPacket(new HotbarInventory(items, new PlayerHotbarState(virtualPhysicalMappings, visualVirtualMappings)));
   }
 
-  public HotbarInvState getInventory() {
+  public HotbarInventory getInventory() {
     return inventory;
   }
 }

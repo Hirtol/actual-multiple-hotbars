@@ -7,8 +7,8 @@ import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import top.hirtol.actualmultiplehotbars.ActualHotbars;
-import top.hirtol.actualmultiplehotbars.ServerState;
-import top.hirtol.actualmultiplehotbars.inventory.HotbarInventory;
+import top.hirtol.actualmultiplehotbars.inventory.ServerInventoryManager;
+import top.hirtol.actualmultiplehotbars.inventory.ServerHotbarInventory;
 import top.hirtol.actualmultiplehotbars.networking.C2SPacket;
 
 public class OpenInvC2SPacket implements C2SPacket {
@@ -32,7 +32,7 @@ public class OpenInvC2SPacket implements C2SPacket {
 
   @Override
   public void handle(MinecraftServer server, ServerPlayerEntity serverPlayer) {
-    HotbarInventory playerState = ServerState.getPlayerState(serverPlayer);
+    ServerHotbarInventory playerState = ServerInventoryManager.getPlayerState(serverPlayer);
 
     playerState.openHandledScreen(serverPlayer);
   }

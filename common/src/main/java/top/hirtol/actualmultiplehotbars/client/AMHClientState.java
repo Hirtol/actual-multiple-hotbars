@@ -6,38 +6,38 @@ import net.minecraft.util.ActionResult;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import top.hirtol.actualmultiplehotbars.config.AMHConfigData;
-import top.hirtol.actualmultiplehotbars.config.AMHConfigData.InventoryProvider;
-import top.hirtol.actualmultiplehotbars.config.Config;
 import top.hirtol.actualmultiplehotbars.client.providers.ExternalHotbarProvider;
 import top.hirtol.actualmultiplehotbars.client.providers.HotbarInventoryProvider;
-import top.hirtol.actualmultiplehotbars.inventory.HotbarInvState;
+import top.hirtol.actualmultiplehotbars.config.AMHConfigData;
+import top.hirtol.actualmultiplehotbars.config.AMHConfigData.InventoryProvider;
+import top.hirtol.actualmultiplehotbars.inventory.HotbarInventory;
 
-public class MultiClientState {
+public class AMHClientState {
 
-  private static final Logger logger = LoggerFactory.getLogger(MultiClientState.class);
-  private static final MultiClientState INSTANCE = new MultiClientState();
+  private static final Logger logger = LoggerFactory.getLogger(AMHClientState.class);
+  private static final AMHClientState INSTANCE = new AMHClientState();
 
   private HotbarInventoryProvider provider;
 
   @Nullable
-  private HotbarInvState hotbarInventory;
+  private HotbarInventory hotbarInventory;
 
-  public static MultiClientState getInstance() {
+  public static AMHClientState getInstance() {
     return INSTANCE;
   }
 
   public void initialise() {
-    AutoConfig.getConfigHolder(AMHConfigData.class).registerSaveListener(this::onConfigSave);
+    ConfigHolder<AMHConfigData> config = AutoConfig.getConfigHolder(AMHConfigData.class);
+    config.registerSaveListener(this::onConfigSave);
 
-    this.initialiseProvider(this.config().getClientSettings().provider);
+    this.initialiseProvider(config.getConfig().client.provider);
   }
 
   /**
    * Handle invariants that need to be enforced whenever the user config changes.
    */
   private ActionResult onConfigSave(ConfigHolder<AMHConfigData> newConfig, AMHConfigData config) {
-    this.initialiseProvider(newConfig.getConfig().client.provider);
+    this.initialiseProvider(config.client.provider);
     return ActionResult.PASS;
   }
 
@@ -47,19 +47,16 @@ public class MultiClientState {
     };
   }
 
-  public Config config() {
-    return Config.getInstance();
-  }
-
   public HotbarInventoryProvider getProvider() {
     return provider;
   }
 
-  public HotbarInvState getHotbarInventory() {
+  @Nullable
+  public HotbarInventory getHotbarInventory() {
     return hotbarInventory;
   }
 
-  public void setHotbarInventory(HotbarInvState hotbarInventory) {
+  public void setHotbarInventory(@Nullable HotbarInventory hotbarInventory) {
     this.hotbarInventory = hotbarInventory;
   }
 }

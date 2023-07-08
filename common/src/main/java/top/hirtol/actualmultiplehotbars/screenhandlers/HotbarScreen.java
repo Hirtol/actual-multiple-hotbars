@@ -13,7 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import top.hirtol.actualmultiplehotbars.ActualHotbars;
 import top.hirtol.actualmultiplehotbars.client.KeyManager;
-import top.hirtol.actualmultiplehotbars.client.MultiClientState;
+import top.hirtol.actualmultiplehotbars.client.AMHClientState;
 
 // GenericContainerScreen
 public class HotbarScreen extends HandledScreen<HotbarScreenHandler>
@@ -67,7 +67,7 @@ public class HotbarScreen extends HandledScreen<HotbarScreenHandler>
 
     int heightAddition = 15;
     int currentHotbar =
-        MultiClientState.getInstance().getHotbarInventory().getVirtualState().visualVirtualMappings.getInt(0);
+        AMHClientState.getInstance().getHotbarInventory().getVirtualState().visualVirtualMappings.getInt(0);
     // Draw hotbar identifiers
     for (int k = 0; k < this.rows; k++) {
       int color = (k + 1) == currentHotbar ? 0xD040D0 : 0x804080;

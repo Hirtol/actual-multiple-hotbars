@@ -15,9 +15,9 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
-import top.hirtol.actualmultiplehotbars.ServerState;
-import top.hirtol.actualmultiplehotbars.client.MultiClientState;
-import top.hirtol.actualmultiplehotbars.config.Config;
+import top.hirtol.actualmultiplehotbars.inventory.ServerInventoryManager;
+import top.hirtol.actualmultiplehotbars.client.AMHClientState;
+import top.hirtol.actualmultiplehotbars.config.AMHConfig;
 
 @Mixin(PlayerInventory.class)
 public abstract class PlayerInventoryMixin {
@@ -35,8 +35,8 @@ public abstract class PlayerInventoryMixin {
       at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerInventory;addStack(ILnet/minecraft/item/ItemStack;)I"),
       locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
   private void preferExtraHotbarPickup(ItemStack stack, CallbackInfoReturnable<Integer> cir, int i) {
-    var config = Config.getInstance();
-    var hotbar = ServerState.getPlayerState(player);
+    var config = AMHConfig.getInstance();
+    var hotbar = ServerInventoryManager.getPlayerState(player);
 
     if (hotbar != null) {
       // Check if this pickup would've gone into the player's main hotbar. If so, allow it if the config is set.
@@ -62,7 +62,7 @@ public abstract class PlayerInventoryMixin {
 
   @Inject(method = "updateItems", at = @At(value = "HEAD"))
   private void updateHotbarItems(CallbackInfo ci) {
-    var hotbar = ServerState.getPlayerState(player);
+    var hotbar = ServerInventoryManager.getPlayerState(player);
 
     if (hotbar != null) {
       for (int i = 0; i < hotbar.getItems().size(); ++i) {
@@ -76,15 +76,15 @@ public abstract class PlayerInventoryMixin {
 
   @Inject(method = "scrollInHotbar", at = @At(value = "HEAD"))
   private void allowScrollingToNextBar(double scrollAmount, CallbackInfo ci) {
-    var hotbar = MultiClientState.getInstance().getHotbarInventory();
+    var hotbar = AMHClientState.getInstance().getHotbarInventory();
 
-    if (MultiClientState.getInstance().config().getClientSettings().allowScrollSwap && hotbar != null
+    if (AMHConfig.getInstance().getClientSettings().allowScrollSwap && hotbar != null
         && this.player.world.isClient) {
       int newSlot = selectedSlot - (int) Math.signum(scrollAmount);
       if (newSlot < 0) {
-        MultiClientState.getInstance().getProvider().rotate((ClientPlayerEntity) player, true);
+        AMHClientState.getInstance().getProvider().rotate((ClientPlayerEntity) player, true);
       } else if (newSlot >= 9) {
-        MultiClientState.getInstance().getProvider().rotate((ClientPlayerEntity) player, false);
+        AMHClientState.getInstance().getProvider().rotate((ClientPlayerEntity) player, false);
       }
     }
   }

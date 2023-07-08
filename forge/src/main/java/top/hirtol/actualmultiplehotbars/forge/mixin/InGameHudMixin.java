@@ -12,7 +12,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import top.hirtol.actualmultiplehotbars.client.MultiClientState;
+import top.hirtol.actualmultiplehotbars.config.AMHConfig;
+import top.hirtol.actualmultiplehotbars.config.AMHConfigData.ClientSettings;
 
 @OnlyIn(Dist.CLIENT)
 @Mixin(InGameHud.class)
@@ -22,11 +23,11 @@ public abstract class InGameHudMixin {
 
   @Inject(method = "renderHeldItemTooltip", at = @At(value = "HEAD"))
   public void shiftIfNecessaryTooltip(MatrixStack matrices, CallbackInfo info) {
-    var settings = MultiClientState.getInstance().config().getClientSettings();
+    ClientSettings settings = AMHConfig.getInstance().getClientSettings();
     // In case the survival elements are skipped.
     boolean shouldDrawSurvivalElements = MinecraftClient.getInstance().interactionManager.hasStatusBars() && MinecraftClient.getInstance().getCameraEntity() instanceof PlayerEntity;
     if (!MinecraftClient.getInstance().options.hudHidden && !shouldDrawSurvivalElements) {
-      matrices.translate(0, -(settings.shift * settings.numberOfAdditionalVisibleHotbars), 0);
+      matrices.translate(0, -(settings.shift * settings.additionalVisibleHotbars), 0);
     }
   }
 }

@@ -11,8 +11,8 @@ import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import top.hirtol.actualmultiplehotbars.ActualHotbars;
-import top.hirtol.actualmultiplehotbars.client.MultiClientState;
-import top.hirtol.actualmultiplehotbars.inventory.HotbarInvState;
+import top.hirtol.actualmultiplehotbars.client.AMHClientState;
+import top.hirtol.actualmultiplehotbars.inventory.HotbarInventory;
 import top.hirtol.actualmultiplehotbars.inventory.PlayerHotbarState;
 
 //GenericContainerScreenHandler
@@ -21,14 +21,14 @@ public class HotbarScreenHandler extends ScreenHandler {
   private static final Logger logger = LoggerFactory.getLogger(HotbarScreenHandler.class);
   public static final Identifier HOTBAR_SCREEN_ID = ActualHotbars.ID("hotbar_screen_handler");
 
-  public HotbarInvState hotbarInventory;
+  public HotbarInventory hotbarInventory;
 
   public HotbarScreenHandler(int syncId, PlayerInventory playerInventory) {
     this(syncId, playerInventory,
-        Objects.requireNonNullElseGet(MultiClientState.getInstance().getHotbarInventory(), HotbarInvState::new));
+        Objects.requireNonNullElseGet(AMHClientState.getInstance().getHotbarInventory(), HotbarInventory::new));
   }
 
-  public HotbarScreenHandler(int syncId, PlayerInventory playerInventory, HotbarInvState inventory) {
+  public HotbarScreenHandler(int syncId, PlayerInventory playerInventory, HotbarInventory inventory) {
     super(ScreenHandlers.HOTBAR_SCREEN.get(), syncId);
 
     this.hotbarInventory = inventory;

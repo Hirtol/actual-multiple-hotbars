@@ -14,8 +14,8 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import top.hirtol.actualmultiplehotbars.config.Config;
-import top.hirtol.actualmultiplehotbars.client.MultiClientState;
+import top.hirtol.actualmultiplehotbars.client.AMHClientState;
+import top.hirtol.actualmultiplehotbars.config.AMHConfig;
 
 @Environment(EnvType.CLIENT)
 @Mixin(Keyboard.class)
@@ -29,7 +29,7 @@ public abstract class KeyboardMixin {
 
   @Inject(method = "onKey", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/InputUtil;fromKeyCode(II)Lnet/minecraft/client/util/InputUtil$Key;"), cancellable = true)
   private void renderHotbarFrame(long window, int key, int scancode, int action, int modifiers, CallbackInfo ci) {
-    var config = Config.getInstance();
+    var config = AMHConfig.getInstance();
     // If control isn't pressed just ignore
     if (modifiers == 0 || action != GLFW.GLFW_PRESS) {
       return;
@@ -41,13 +41,25 @@ public abstract class KeyboardMixin {
       return;
     }
 
+    if (AMHConfig.getInstance().getClientSettings().debugMode) {
+      if (rowToEquip == 7) {
+        logger.warn("Resetting hotbar states");
+        AMHClientState.getInstance().getProvider().reset();
+      }
+
+      if (rowToEquip == 8) {
+        var state = AMHClientState.getInstance().getHotbarInventory().getVirtualState();
+        for (int i = 0; i < 4; i++) {
+          System.out.println("Visual: " + i + " - Virtual: " + state.visualVirtualMappings.getInt(i) + " - Physical: "
+                             + state.virtualPhysicalMappings.getInt(state.visualVirtualMappings.getInt(i)));
+        }
+      }
+    }
+
+    // Actual business logic
     if ((modifiers & config.getClientSettings().swapModifierKey.toGlfwModifier()) != 0) {
       ci.cancel();
-      MultiClientState.getInstance().getProvider().swapRow(client.player, rowToEquip);
-    } else if ((modifiers & config.getClientSettings().secondaryEquipKey.toGlfwModifier()) != 0) {
-      if (config.getAdditionalHotbars() >= 1) {
-        MultiClientState.getInstance().getProvider().swapRow(client.player, 1);
-      }
+      AMHClientState.getInstance().getProvider().equipVirtualHotbar(client.player, rowToEquip);
     }
   }
 }

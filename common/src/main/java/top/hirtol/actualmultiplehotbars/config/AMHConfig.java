@@ -9,11 +9,11 @@ import org.slf4j.LoggerFactory;
 import top.hirtol.actualmultiplehotbars.config.AMHConfigData.ClientSettings;
 import top.hirtol.actualmultiplehotbars.config.AMHConfigData.ServerSettings;
 
-public class Config {
+public class AMHConfig {
 
-  private static final Logger logger = LoggerFactory.getLogger(Config.class);
+  private static final Logger logger = LoggerFactory.getLogger(AMHConfig.class);
 
-  private static Config INSTANCE;
+  private static AMHConfig INSTANCE;
 
   private final AMHConfigData data;
   private ServerSettings remoteSettings;
@@ -21,18 +21,18 @@ public class Config {
   public static void init() {
     var data = AMHConfigData.init();
 
-    INSTANCE = new Config(data.getConfig());
+    INSTANCE = new AMHConfig(data.getConfig());
   }
 
   public static void onChange(Save<AMHConfigData> callback) {
     AutoConfig.getConfigHolder(AMHConfigData.class).registerSaveListener(callback);
   }
 
-  public static Config getInstance() {
+  public static AMHConfig getInstance() {
     return INSTANCE;
   }
 
-  public Config(@NotNull AMHConfigData data) {
+  public AMHConfig(@NotNull AMHConfigData data) {
     this.data = data;
     this.remoteSettings = null;
   }

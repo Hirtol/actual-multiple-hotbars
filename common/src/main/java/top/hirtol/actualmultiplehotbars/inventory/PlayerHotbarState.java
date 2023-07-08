@@ -13,7 +13,6 @@ public class PlayerHotbarState {
 
   private static final Logger logger = LoggerFactory.getLogger(PlayerHotbarState.class);
 
-
   public IntList visualVirtualMappings;
   public IntList virtualPhysicalMappings;
 
@@ -31,16 +30,8 @@ public class PlayerHotbarState {
     this.visualVirtualMappings = visualMappings;
   }
 
-  public int getFromPhysical(int physicalHotbarIndex) {
-    return this.virtualPhysicalMappings.indexOf(physicalHotbarIndex);
-  }
-
   public int getPhysicalFromVisual(int visualHotbarIndex) {
     return this.virtualPhysicalMappings.getInt(this.visualVirtualMappings.getInt(visualHotbarIndex));
-  }
-
-  public int getVisualFromVirtual(int virtualHotbarIndex) {
-    return this.visualVirtualMappings.indexOf(virtualHotbarIndex);
   }
 
   public void reset() {

@@ -22,7 +22,7 @@
   "text.autoconfig.actualmultiplehotbars.option.client.shift": "Vertical Position",
   "text.autoconfig.actualmultiplehotbars.option.client.provider": "Hotbar Provider",
   "text.autoconfig.actualmultiplehotbars.option.client.provider.@Tooltip": "The inventory system to use for the extra hotbars.",
-  "text.autoconfig.actualmultiplehotbars.option.client.numberOfAdditionalVisibleHotbars": "Additional Hotbars Visible",
+  "text.autoconfig.actualmultiplehotbars.option.client.additionalVisibleHotbars": "Additional Hotbars Visible",
   "text.autoconfig.actualmultiplehotbars.option.client.rotateBeyondVisible": "Allow Rotation Into Invisible Hotbars",
   "text.autoconfig.actualmultiplehotbars.option.client.rotateBeyondVisible.@Tooltip[0]": "When enabled any hotbar which isn't currently displayed can be rotated into",
   "text.autoconfig.actualmultiplehotbars.option.client.rotateBeyondVisible.@Tooltip[1]": "using the 'Rotate hotbars' hotkey",

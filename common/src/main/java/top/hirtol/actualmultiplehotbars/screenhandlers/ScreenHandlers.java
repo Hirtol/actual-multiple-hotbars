@@ -14,7 +14,7 @@ import net.minecraft.util.registry.Registry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import top.hirtol.actualmultiplehotbars.ActualHotbars;
-import top.hirtol.actualmultiplehotbars.inventory.HotbarInventory;
+import top.hirtol.actualmultiplehotbars.inventory.ServerHotbarInventory;
 
 public class ScreenHandlers {
 
@@ -36,7 +36,7 @@ public class ScreenHandlers {
     MenuRegistry.registerScreenFactory(ScreenHandlers.HOTBAR_SCREEN.get(), HotbarScreen::new);
   }
 
-  public static ScreenHandler createScreen(int syncId, PlayerInventory inv, HotbarInventory hotbarInventory) {
+  public static ScreenHandler createHotbarScreen(int syncId, PlayerInventory inv, ServerHotbarInventory hotbarInventory) {
     return new HotbarScreenHandler(syncId, inv, hotbarInventory);
   }
 }

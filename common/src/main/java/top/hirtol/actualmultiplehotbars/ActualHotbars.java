@@ -5,8 +5,9 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import top.hirtol.actualmultiplehotbars.config.Config;
-import top.hirtol.actualmultiplehotbars.inventory.HotbarInventory;
+import top.hirtol.actualmultiplehotbars.config.AMHConfig;
+import top.hirtol.actualmultiplehotbars.inventory.ServerHotbarInventory;
+import top.hirtol.actualmultiplehotbars.inventory.ServerInventoryManager;
 import top.hirtol.actualmultiplehotbars.networking.PacketRegistry;
 import top.hirtol.actualmultiplehotbars.networking.packets.HotbarInvS2CPacket;
 import top.hirtol.actualmultiplehotbars.networking.packets.SyncS2CConfigPacket;
@@ -18,21 +19,21 @@ public class ActualHotbars {
   public static final Logger logger = LoggerFactory.getLogger(ActualHotbars.class);
 
   public static void init() {
-    Config.init();
+    AMHConfig.init();
     PacketRegistry.initialiseServer();
     ScreenHandlers.init();
 
     PlayerEvent.PLAYER_JOIN.register(player -> {
       // Keep config in-sync. WARNING -> This currently leaks memory, has to be a better way of doing this
-      Config.onChange((configHolder, ConfigData) -> {
+      AMHConfig.onChange((configHolder, ConfigData) -> {
         var packet = new SyncS2CConfigPacket(ConfigData.serverSettings);
         packet.send(player);
         return ActionResult.PASS;
       });
 
       // Sync initial state.
-      HotbarInventory playerState = ServerState.getPlayerState(player);
-      var serverSettings = Config.getInstance().getServerSettings();
+      ServerHotbarInventory playerState = ServerInventoryManager.getPlayerState(player);
+      var serverSettings = AMHConfig.getInstance().getServerSettings();
       var syncPacket = new SyncS2CConfigPacket(serverSettings);
       var packet = new HotbarInvS2CPacket(playerState);
 

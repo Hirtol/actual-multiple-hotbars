@@ -4,12 +4,13 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.item.ItemStack;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import top.hirtol.actualmultiplehotbars.client.MultiClientState;
-import top.hirtol.actualmultiplehotbars.config.Config;
-import top.hirtol.actualmultiplehotbars.inventory.HotbarInvState;
+import top.hirtol.actualmultiplehotbars.client.AMHClientState;
+import top.hirtol.actualmultiplehotbars.config.AMHConfig;
+import top.hirtol.actualmultiplehotbars.inventory.HotbarInventory;
 import top.hirtol.actualmultiplehotbars.inventory.PlayerHotbarState;
 import top.hirtol.actualmultiplehotbars.networking.packets.HotbarRotateC2SPacket;
 import top.hirtol.actualmultiplehotbars.networking.packets.HotbarSetVirtualC2SPacket;
+import top.hirtol.actualmultiplehotbars.networking.packets.ResetVisualC2SPacket;
 
 /**
  * Will use a seperately stored inventory (with say, n*9 capacity, where `n` is the amount of hotbars we allow). When we
@@ -26,11 +27,11 @@ public class ExternalHotbarProvider implements HotbarInventoryProvider {
 
   private static final Logger logger = LoggerFactory.getLogger(ExternalHotbarProvider.class);
 
-  private Config config = MultiClientState.getInstance().config();
+  private final AMHConfig config = AMHConfig.getInstance();
 
   @Override
   public ItemStack getItem(int i) {
-    var inventory = MultiClientState.getInstance().getHotbarInventory();
+    var inventory = AMHClientState.getInstance().getHotbarInventory();
 
     if (inventory != null) {
       return inventory.getStack(i);
@@ -41,12 +42,13 @@ public class ExternalHotbarProvider implements HotbarInventoryProvider {
 
   @Override
   public void reset() {
-
+    ResetVisualC2SPacket reset = new ResetVisualC2SPacket();
+    reset.send();
   }
 
   @Override
-  public void swapRow(ClientPlayerEntity player, int virtualHotbarIndex) {
-    if (virtualHotbarIndex > (config.getAdditionalHotbars())) {
+  public void equipVirtualHotbar(ClientPlayerEntity player, int virtualHotbarIndex) {
+    if (virtualHotbarIndex > config.getAdditionalHotbars()) {
       return;
     }
     this.preventBobAnimation(player, virtualHotbarIndex);
@@ -59,8 +61,8 @@ public class ExternalHotbarProvider implements HotbarInventoryProvider {
   public void rotate(ClientPlayerEntity player, boolean reverse) {
     var packet = new HotbarRotateC2SPacket(this.getMaxRowIndexIncl(), reverse);
     // Prevent item bob animation on equip.
-    PlayerHotbarState state = MultiClientState.getInstance().getHotbarInventory().getVirtualState();
-    int visualRowToEquip = reverse ? config.getClientSettings().numberOfAdditionalVisibleHotbars
+    PlayerHotbarState state = AMHClientState.getInstance().getHotbarInventory().getVirtualState();
+    int visualRowToEquip = reverse ? config.getClientSettings().additionalVisibleHotbars
         : 1 % config.getClientSettings().totalHotbars();
     int rowToEquip = state.visualVirtualMappings.getInt(visualRowToEquip);
 
@@ -71,7 +73,7 @@ public class ExternalHotbarProvider implements HotbarInventoryProvider {
 
   private int getMaxRowIndexIncl() {
     int additionalPossible = Math.max(this.config.getAdditionalHotbars(), 0);
-    int maxVisibleIndex = Math.max(this.config.getClientSettings().numberOfAdditionalVisibleHotbars, 0);
+    int maxVisibleIndex = Math.max(this.config.getClientSettings().additionalVisibleHotbars, 0);
 
     return (this.config.getClientSettings().rotateBeyondVisible ?
         additionalPossible
@@ -79,8 +81,8 @@ public class ExternalHotbarProvider implements HotbarInventoryProvider {
   }
 
   private void preventBobAnimation(ClientPlayerEntity player, int virtualRowToEquip) {
-    MultiClientState state = MultiClientState.getInstance();
-    HotbarInvState inventory = state.getHotbarInventory();
+    AMHClientState state = AMHClientState.getInstance();
+    HotbarInventory inventory = state.getHotbarInventory();
     int physicalRow = inventory.getVirtualState().virtualPhysicalMappings.getInt(virtualRowToEquip);
 
     // Update the playerScreenHandler to prevent bob-animations.

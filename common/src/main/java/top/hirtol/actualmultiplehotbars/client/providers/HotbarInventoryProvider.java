@@ -8,7 +8,6 @@ public interface HotbarInventoryProvider {
   /**
    * Get the current item at index `i` of the Provider's inventory.
    * @param i
-   * @return
    */
   ItemStack getItem(int i);
 
@@ -23,7 +22,7 @@ public interface HotbarInventoryProvider {
    * @param player The player to swap
    * @param row The row to swap
    */
-  void swapRow(ClientPlayerEntity player, int row);
+  void equipVirtualHotbar(ClientPlayerEntity player, int row);
 
   /**
    * Rotate the current hotbars

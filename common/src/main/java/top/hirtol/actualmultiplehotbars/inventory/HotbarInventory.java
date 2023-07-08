@@ -86,24 +86,48 @@ public class HotbarInventory extends HotbarInvState {
     ServerPacketHandler.swapRow(this.player, fromPhysical, toPhysical);
   }
 
-  public void rotateVisualHotbars(int maxVisualIndexIncl) {
+  /**
+   * Rotate the given range of hotbars (from visual 0..=maxVisualIndexIncl).
+   *
+   * Will only shift the physical items of the current equipped hotbar and the hotbar to-be equipped.
+   * The remainder are merely visual moves.
+   * @param maxVisualIndexIncl The max index of the Visual hotbars to rotate.
+   * @param reverse Whether to rotate in reverse or not
+   */
+  public void rotateVisualHotbars(int maxVisualIndexIncl, boolean reverse) {
     if (maxVisualIndexIncl < 0 || maxVisualIndexIncl > this.getRowCount()) {
       logger.warn("Player `{}` attempted to rotate invalid hotbar `{}`", this.player.getName().getString(),
           maxVisualIndexIncl);
       return;
     }
-
-    PlayerHotbarState state = this.getVirtualState();
-    int fromVisual = PlayerHotbarState.MAIN_HOTBAR_INDEX;
-    int toVisual = maxVisualIndexIncl;
-
-    int previous = state.visualVirtualMappings.getInt(PlayerHotbarState.MAIN_HOTBAR_INDEX);
-    for (int i = 0; i < maxVisualIndexIncl; i++) {
-      int nextIndex = (state.visualVirtualMappings.getInt((i + 1) % (maxVisualIndexIncl + 1)));
-      state.visualVirtualMappings.set(i, nextIndex);
+    if (maxVisualIndexIncl == 0) {
+      return;
     }
 
-    state.visualVirtualMappings.set(toVisual, previous);
+    PlayerHotbarState state = this.getVirtualState();
+    int fromVisual = reverse ? PlayerHotbarState.MAIN_HOTBAR_INDEX + 1 : PlayerHotbarState.MAIN_HOTBAR_INDEX;
+    int toVisual = reverse ? PlayerHotbarState.MAIN_HOTBAR_INDEX : maxVisualIndexIncl;
+
+    int previousVirtual;
+
+    if (reverse) {
+      previousVirtual = state.visualVirtualMappings.getInt(maxVisualIndexIncl);
+
+      for (int i = maxVisualIndexIncl; i > 0; i--) {
+        int previousIndex = state.visualVirtualMappings.getInt(i - 1);
+        state.visualVirtualMappings.set(i, previousIndex);
+      }
+
+    } else {
+      previousVirtual = state.visualVirtualMappings.getInt(PlayerHotbarState.MAIN_HOTBAR_INDEX);
+
+      for (int i = 0; i < maxVisualIndexIncl; i++) {
+        int nextIndex = (state.visualVirtualMappings.getInt((i + 1) % (maxVisualIndexIncl + 1)));
+        state.visualVirtualMappings.set(i, nextIndex);
+      }
+    }
+
+    state.visualVirtualMappings.set(toVisual, previousVirtual);
 
     int fromVirtual = state.visualVirtualMappings.getInt(fromVisual);
     int toVirtual = state.visualVirtualMappings.getInt(toVisual);

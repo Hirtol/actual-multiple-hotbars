@@ -16,15 +16,17 @@ public class HotbarRotateC2SPacket implements C2SPacket {
   private static final Logger logger = LoggerFactory.getLogger(HotbarRotateC2SPacket.class);
 
   public int maxRotateIndexIncl;
+  public boolean reverse;
 
-  public HotbarRotateC2SPacket(int maxRotateIndexIncl) {
+  public HotbarRotateC2SPacket(int maxRotateIndexIncl, boolean reverse) {
     this.maxRotateIndexIncl = maxRotateIndexIncl;
+    this.reverse = reverse;
   }
 
   @Override
   public void handle(MinecraftServer server, ServerPlayerEntity serverPlayer) {
     var state = ServerState.getPlayerState(serverPlayer);
-    state.rotateVisualHotbars(this.maxRotateIndexIncl);
+    state.rotateVisualHotbars(this.maxRotateIndexIncl, this.reverse);
   }
 
   @Override
@@ -35,10 +37,11 @@ public class HotbarRotateC2SPacket implements C2SPacket {
   @Override
   public void write(PacketByteBuf buf) {
     buf.writeInt(this.maxRotateIndexIncl);
+    buf.writeBoolean(this.reverse);
   }
 
   public static HotbarRotateC2SPacket read(PacketByteBuf buf) {
-    return new HotbarRotateC2SPacket(buf.readInt());
+    return new HotbarRotateC2SPacket(buf.readInt(), buf.readBoolean());
   }
 
 }

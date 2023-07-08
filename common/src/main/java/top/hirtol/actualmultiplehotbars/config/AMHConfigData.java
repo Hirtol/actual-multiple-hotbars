@@ -66,6 +66,9 @@ public class AMHConfigData implements ConfigData {
     @ConfigEntry.Gui.Tooltip
     public boolean reverseBars = true;
 
+    @ConfigEntry.Gui.Tooltip
+    public boolean allowScrollSwap = true;
+
     @ConfigEntry.Gui.Tooltip(count = 2)
     public ModifierKey swapModifierKey = ModifierKey.Control;
     @ConfigEntry.Gui.Tooltip(count = 2)
@@ -74,6 +77,10 @@ public class AMHConfigData implements ConfigData {
     @ConfigEntry.Category("Provider")
     @ConfigEntry.Gui.Tooltip
     public InventoryProvider provider = InventoryProvider.HotbarInventory;
+
+    public int totalHotbars() {
+      return 1 + this.numberOfAdditionalVisibleHotbars;
+    }
   }
 
   public enum InventoryProvider {

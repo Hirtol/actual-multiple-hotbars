@@ -1,6 +1,7 @@
 package top.hirtol.actualmultiplehotbars.mixin;
 
 
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
@@ -14,8 +15,9 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
-import top.hirtol.actualmultiplehotbars.config.Config;
 import top.hirtol.actualmultiplehotbars.ServerState;
+import top.hirtol.actualmultiplehotbars.client.MultiClientState;
+import top.hirtol.actualmultiplehotbars.config.Config;
 
 @Mixin(PlayerInventory.class)
 public abstract class PlayerInventoryMixin {
@@ -25,6 +27,9 @@ public abstract class PlayerInventoryMixin {
   @Final
   @Shadow
   public PlayerEntity player;
+
+  @Shadow
+  public int selectedSlot;
 
   @Inject(method = "addStack(Lnet/minecraft/item/ItemStack;)I",
       at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerInventory;addStack(ILnet/minecraft/item/ItemStack;)I"),
@@ -65,6 +70,21 @@ public abstract class PlayerInventoryMixin {
           continue;
         }
         hotbar.getStack(i).inventoryTick(this.player.world, this.player, i, false);
+      }
+    }
+  }
+
+  @Inject(method = "scrollInHotbar", at = @At(value = "HEAD"))
+  private void allowScrollingToNextBar(double scrollAmount, CallbackInfo ci) {
+    var hotbar = MultiClientState.getInstance().getHotbarInventory();
+
+    if (MultiClientState.getInstance().config().getClientSettings().allowScrollSwap && hotbar != null
+        && this.player.world.isClient) {
+      int newSlot = selectedSlot - (int) Math.signum(scrollAmount);
+      if (newSlot < 0) {
+        MultiClientState.getInstance().getProvider().rotate((ClientPlayerEntity) player, true);
+      } else if (newSlot >= 9) {
+        MultiClientState.getInstance().getProvider().rotate((ClientPlayerEntity) player, false);
       }
     }
   }

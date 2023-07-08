@@ -56,11 +56,14 @@ public class ExternalHotbarProvider implements HotbarInventoryProvider {
   }
 
   @Override
-  public void rotate(ClientPlayerEntity player) {
-    var packet = new HotbarRotateC2SPacket(this.getMaxRowIndexIncl());
+  public void rotate(ClientPlayerEntity player, boolean reverse) {
+    var packet = new HotbarRotateC2SPacket(this.getMaxRowIndexIncl(), reverse);
+    // Prevent item bob animation on equip.
+    PlayerHotbarState state = MultiClientState.getInstance().getHotbarInventory().getVirtualState();
+    int visualRowToEquip = reverse ? config.getClientSettings().numberOfAdditionalVisibleHotbars
+        : 1 % config.getClientSettings().totalHotbars();
+    int rowToEquip = state.visualVirtualMappings.getInt(visualRowToEquip);
 
-    int rowToEquip = MultiClientState.getInstance().getHotbarInventory().getVirtualState().visualVirtualMappings.getInt(
-        1 % config.getAdditionalHotbars());
     this.preventBobAnimation(player, rowToEquip);
 
     packet.send();

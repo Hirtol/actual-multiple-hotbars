@@ -29,5 +29,5 @@ public interface HotbarInventoryProvider {
    * Rotate the current hotbars
    * @param player The player for whom to rotate.
    */
-  void rotate(ClientPlayerEntity player);
+  void rotate(ClientPlayerEntity player, boolean reverse);
 }

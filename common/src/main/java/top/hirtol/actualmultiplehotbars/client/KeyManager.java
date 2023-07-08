@@ -28,7 +28,7 @@ public class KeyManager {
     ClientTickEvent.CLIENT_POST.register(client -> {
       var currentInstance = MultiClientState.getInstance();
       if (rotateKey.wasPressed()) {
-        currentInstance.getProvider().rotate(client.player);
+        currentInstance.getProvider().rotate(client.player, false);
       }
 
       if (changeVisibleHotbars.wasPressed()) {

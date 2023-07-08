@@ -27,6 +27,8 @@
   "text.autoconfig.actualmultiplehotbars.option.client.rotateBeyondVisible.@Tooltip[1]": "using the 'Rotate hotbars' hotkey",
   "text.autoconfig.actualmultiplehotbars.option.client.reverseBars": "Reverse Hotbar Order",
   "text.autoconfig.actualmultiplehotbars.option.client.reverseBars.@Tooltip": "This keeps the active hotbar on top, as opposed to the bottom as in default MC",
+  "text.autoconfig.actualmultiplehotbars.option.client.allowScrollSwap": "Allow Mouse Scroll Swap",
+  "text.autoconfig.actualmultiplehotbars.option.client.allowScrollSwap.@Tooltip": "When the hotbar cursor will wrap around when scrolling with the mouse the next/previous hotbar will be automatically equipped",
   "text.autoconfig.actualmultiplehotbars.option.client.swapModifierKey": "Swap Single Bar Modifier Key",
   "text.autoconfig.actualmultiplehotbars.option.client.swapModifierKey.@Tooltip[0]": "When this modifier key is pressed alongside '1', '2', '3', etc",
   "text.autoconfig.actualmultiplehotbars.option.client.swapModifierKey.@Tooltip[1]": "then the corresponding hotbar is directly swapped with the currently equiped hotbar",

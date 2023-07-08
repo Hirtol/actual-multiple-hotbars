@@ -1,7 +1,9 @@
 {
-  "category.actualmultiplehotbars.keybinds": "Multi Hotbar Fabric",
-  "key.actualmultiplehotbars.swap": "Rotate Hotbars",
+  "category.actualmultiplehotbars.keybinds": "Actual Multiple Hotbars",
+  "key.actualmultiplehotbars.rotate": "Rotate Hotbars",
+  "key.actualmultiplehotbars.rotate_reverse": "Reverse Rotate Hotbars",
   "key.actualmultiplehotbars.openui": "Open Hotbars UI",
+  "key.actualmultiplehotbars.increase_hotbars": "Add One Visible Hotbar",
   "screen.actualmultiplehotbars.ui.title": "Additional Hotbars",
 
   "text.autoconfig.actualmultiplehotbars.category.default":"Client Settings",
@@ -20,19 +22,20 @@
   "text.autoconfig.actualmultiplehotbars.option.client.shift": "Vertical Position",
   "text.autoconfig.actualmultiplehotbars.option.client.provider": "Hotbar Provider",
   "text.autoconfig.actualmultiplehotbars.option.client.provider.@Tooltip": "The inventory system to use for the extra hotbars.",
-  "text.autoconfig.actualmultiplehotbars.option.client.numberOfAdditionalVisibleHotbars": "Additional Hotbars Visible",
+  "text.autoconfig.actualmultiplehotbars.option.client.additionalVisibleHotbars": "Additional Hotbars Visible",
   "text.autoconfig.actualmultiplehotbars.option.client.rotateBeyondVisible": "Allow Rotation Into Invisible Hotbars",
   "text.autoconfig.actualmultiplehotbars.option.client.rotateBeyondVisible.@Tooltip[0]": "When enabled any hotbar which isn't currently displayed can be rotated into",
   "text.autoconfig.actualmultiplehotbars.option.client.rotateBeyondVisible.@Tooltip[1]": "using the 'Rotate hotbars' hotkey",
   "text.autoconfig.actualmultiplehotbars.option.client.reverseBars": "Reverse Hotbar Order",
   "text.autoconfig.actualmultiplehotbars.option.client.reverseBars.@Tooltip": "This keeps the active hotbar on top, as opposed to the bottom as in default MC",
+  "text.autoconfig.actualmultiplehotbars.option.client.allowScrollSwap": "Allow Mouse Scroll Swap",
+  "text.autoconfig.actualmultiplehotbars.option.client.allowScrollSwap.@Tooltip": "When the hotbar cursor will wrap around when scrolling with the mouse the next/previous hotbar will be automatically equipped",
   "text.autoconfig.actualmultiplehotbars.option.client.swapModifierKey": "Swap Single Bar Modifier Key",
   "text.autoconfig.actualmultiplehotbars.option.client.swapModifierKey.@Tooltip[0]": "When this modifier key is pressed alongside '1', '2', '3', etc",
-  "text.autoconfig.actualmultiplehotbars.option.client.swapModifierKey.@Tooltip[1]": "then the corresponding hotbar is directly swapped with the currently equiped hotbar",
+  "text.autoconfig.actualmultiplehotbars.option.client.swapModifierKey.@Tooltip[1]": "then the corresponding hotbar is directly swapped with the currently equipped hotbar",
   "text.autoconfig.actualmultiplehotbars.option.client.secondaryEquipKey": "Swap and Equip Inactive Hotbar Modifier key",
   "text.autoconfig.actualmultiplehotbars.option.client.secondaryEquipKey.@Tooltip[0]": "When this modifier key is pressed alongside '1', '2', '3', etc",
   "text.autoconfig.actualmultiplehotbars.option.client.secondaryEquipKey.@Tooltip[1]": "then the secondary hotbar is equipped and the slot corresponding to the number key is selected",
 
-  "text.autoconfig.actualmultiplehotbars.title":"Multi Hotbar Fabric Config",
-  "text.actualmultiplehotbars.unsupported":"[MHF] This server doesn't support additional hotbar inventories, forcing player inventories"
+  "text.autoconfig.actualmultiplehotbars.title":"Actual Multiple Hotbars Config"
 }

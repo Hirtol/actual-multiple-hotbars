@@ -1,32 +1,33 @@
 package top.hirtol.actualmultiplehotbars.networking.packets;
 
+import it.unimi.dsi.fastutil.ints.IntList;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import top.hirtol.actualmultiplehotbars.ActualHotbars;
-import top.hirtol.actualmultiplehotbars.client.MultiClientState;
-import top.hirtol.actualmultiplehotbars.inventory.PartialHotbarInventory;
+import top.hirtol.actualmultiplehotbars.client.AMHClientState;
+import top.hirtol.actualmultiplehotbars.inventory.HotbarInventory;
+import top.hirtol.actualmultiplehotbars.inventory.PlayerHotbarState;
 import top.hirtol.actualmultiplehotbars.networking.S2CPacket;
 
 public class HotbarInvS2CPacket implements S2CPacket {
 
   public static final Identifier ID = new Identifier(ActualHotbars.MOD_ID, "hotbar_sync");
-  private static final Logger logger = LogManager.getLogger(HotbarInvS2CPacket.class);
+  private static final Logger logger = LoggerFactory.getLogger(HotbarInvS2CPacket.class);
 
-  private PartialHotbarInventory inventory;
+  private HotbarInventory inventory;
 
-  public HotbarInvS2CPacket(PartialHotbarInventory inventory) {
+  public HotbarInvS2CPacket(HotbarInventory inventory) {
     this.inventory = inventory;
   }
 
   @Override
   public void handle(MinecraftClient client) {
-    client.execute(
-        () -> MultiClientState.getInstance().setHotbarInventory(this.inventory));
+        AMHClientState.getInstance().setHotbarInventory(this.inventory);
   }
 
   @Override
@@ -36,22 +37,20 @@ public class HotbarInvS2CPacket implements S2CPacket {
 
   @Override
   public void write(PacketByteBuf buf) {
-    buf.writeInt(inventory.getItems().size());
-    for (ItemStack item : inventory.getItems()) {
-      buf.writeItemStack(item);
-    }
+    buf.writeIntList(inventory.getVirtualState().virtualPhysicalMappings);
+    buf.writeIntList(inventory.getVirtualState().visualVirtualMappings);
+    buf.writeCollection(inventory.getItems(), PacketByteBuf::writeItemStack);
   }
 
   public static HotbarInvS2CPacket read(PacketByteBuf buf) {
-    int length = buf.readInt();
-    DefaultedList<ItemStack> defaulted = DefaultedList.ofSize(length, ItemStack.EMPTY);
-    for (int i = 0; i < length; i++) {
-      defaulted.set(i, buf.readItemStack());
-    }
-    return new HotbarInvS2CPacket(new PartialHotbarInventory(defaulted));
+    IntList virtualPhysicalMappings = buf.readIntList();
+    IntList visualVirtualMappings = buf.readIntList();
+    DefaultedList<ItemStack> items = buf.readCollection(DefaultedList::ofSize, PacketByteBuf::readItemStack);
+
+    return new HotbarInvS2CPacket(new HotbarInventory(items, new PlayerHotbarState(virtualPhysicalMappings, visualVirtualMappings)));
   }
 
-  public PartialHotbarInventory getInventory() {
+  public HotbarInventory getInventory() {
     return inventory;
   }
 }

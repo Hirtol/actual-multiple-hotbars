@@ -8,9 +8,9 @@
     "Hirtol"
   ],
   "contact": {
-    "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/Hirtol/multi-hotbar-fabric",
-    "repo": "https://github.com/Hirtol/multi-hotbar-fabric"
+    "homepage": "https://github.com/Hirtol/actual-multiple-hotbars",
+    "sources": "https://github.com/Hirtol/actual-multiple-hotbars",
+    "repo": "https://github.com/Hirtol/actual-multiple-hotbars"
   },
   "license": "MIT",
   "icon": "assets/actualmultiplehotbars/icon.png",

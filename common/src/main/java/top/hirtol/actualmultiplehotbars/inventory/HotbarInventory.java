@@ -1,57 +1,93 @@
 package top.hirtol.actualmultiplehotbars.inventory;
 
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.Inventories;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.screen.SimpleNamedScreenHandlerFactory;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.collection.DefaultedList;
-import top.hirtol.actualmultiplehotbars.ActualHotbars;
-import top.hirtol.actualmultiplehotbars.ServerState;
-import top.hirtol.actualmultiplehotbars.networking.packets.HotbarInvS2CPacket;
-import top.hirtol.actualmultiplehotbars.screenhandlers.ScreenHandlers;
+import top.hirtol.actualmultiplehotbars.config.AMHConfig;
 
-public class HotbarInventory extends PartialHotbarInventory {
+public class HotbarInventory implements ImplementedInventory {
 
-  private final ServerPlayerEntity player;
+  private final DefaultedList<ItemStack> items;
 
-  public HotbarInventory(DefaultedList<ItemStack> items, ServerPlayerEntity player) {
-    super(items);
-    this.player = player;
+  private final PlayerHotbarState state;
+
+  public HotbarInventory() {
+    this(DefaultedList.ofSize(
+        AMHConfig.getInstance().getAdditionalHotbars() * 9, ItemStack.EMPTY), new PlayerHotbarState(1 + AMHConfig.getInstance().getAdditionalHotbars()));
   }
 
-  public HotbarInventory(PartialHotbarInventory inventory, ServerPlayerEntity player) {
-    this(inventory.getItems(), player);
+  public HotbarInventory(DefaultedList<ItemStack> items, PlayerHotbarState state) {
+    this.items = items;
+    this.state = state;
+  }
+
+  public void readNbt(NbtCompound nbt) {
+    Inventories.readNbt(nbt, this.items);
+    state.readNbt(nbt);
+  }
+
+  public NbtCompound writeNbt(NbtCompound nbt) {
+    Inventories.writeNbt(nbt, this.items);
+    state.writeNbt(nbt);
+
+    return nbt;
+  }
+
+  public int getColumnCount() {
+    return PlayerHotbarState.VANILLA_HOTBAR_SIZE;
+  }
+
+  public int getRowCount() {
+    return this.items.size() / this.getColumnCount();
+  }
+
+  public PlayerHotbarState getVirtualState() {
+    return state;
   }
 
   @Override
-  public void markDirty() {
-    if (!this.player.world.isClient) {
-      this.getItems().forEach(x -> ActualHotbars.logger.warn(x.toString()));
-      ServerState state = ServerState.getServerState(this.player.getServer());
-      state.markDirty();
-      
-      HotbarInvS2CPacket packet = new HotbarInvS2CPacket(this);
-      packet.send(this.player);
+  public DefaultedList<ItemStack> getItems() {
+    return this.items;
+  }
+
+  public int addStackTillMax(int slot, ItemStack stack) {
+    // Copied from PlayerInventory.java
+    int j;
+    Item item = stack.getItem();
+    int i = stack.getCount();
+    ItemStack itemStack = this.getStack(slot);
+    if (itemStack.isEmpty()) {
+      itemStack = new ItemStack(item, 0);
+      if (stack.hasNbt()) {
+        itemStack.setNbt(stack.getNbt().copy());
+      }
+      this.setStack(slot, itemStack);
     }
-  }
-
-  public void openHandledScreen(PlayerEntity player) {
-    if (!player.world.isClient) {
-      SimpleNamedScreenHandlerFactory newScreen =
-          new SimpleNamedScreenHandlerFactory((syncId, inv, openPlayer) -> ScreenHandlers.createScreen(syncId, inv, this), new TranslatableText("screen.actualmultiplehotbars.ui.title"));
-
-      player.openHandledScreen(newScreen);
+    if ((j = i) > itemStack.getMaxCount() - itemStack.getCount()) {
+      j = itemStack.getMaxCount() - itemStack.getCount();
     }
+    if (j > this.getMaxCountPerStack() - itemStack.getCount()) {
+      j = this.getMaxCountPerStack() - itemStack.getCount();
+    }
+    if (j == 0) {
+      return i;
+    }
+    itemStack.increment(j);
+    itemStack.setBobbingAnimationTime(5);
+    return i -= j;
   }
 
-  @Override
-  public void onClose(PlayerEntity player) {
-    this.markDirty();
+  public int getOccupiedSlotWithRoomForStack(ItemStack stack) {
+    for (int i = 0; i < this.items.size(); ++i) {
+      if (!this.canStackAddMore(this.items.get(i), stack)) continue;
+      return i;
+    }
+    return -1;
   }
 
-  public ServerPlayerEntity getPlayer() {
-    return player;
+  private boolean canStackAddMore(ItemStack existingStack, ItemStack stack) {
+    return !existingStack.isEmpty() && ItemStack.canCombine(existingStack, stack) && existingStack.isStackable() && existingStack.getCount() < existingStack.getMaxCount() && existingStack.getCount() < this.getMaxCountPerStack();
   }
 }

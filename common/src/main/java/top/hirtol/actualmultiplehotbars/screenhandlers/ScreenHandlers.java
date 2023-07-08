@@ -36,7 +36,8 @@ public class ScreenHandlers {
     MenuRegistry.registerScreenFactory(ScreenHandlers.HOTBAR_SCREEN.get(), HotbarScreen::new);
   }
 
-  public static ScreenHandler createHotbarScreen(int syncId, PlayerInventory inv, ServerHotbarInventory hotbarInventory) {
+  public static ScreenHandler createHotbarScreen(int syncId, PlayerInventory inv,
+      ServerHotbarInventory hotbarInventory) {
     return new HotbarScreenHandler(syncId, inv, hotbarInventory);
   }
 }

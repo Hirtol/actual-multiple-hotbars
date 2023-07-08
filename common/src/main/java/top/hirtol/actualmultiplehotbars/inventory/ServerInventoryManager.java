@@ -58,8 +58,9 @@ public class ServerInventoryManager extends PersistentState {
 
   /**
    * Get the player's hotbar inventory if we're currently running on the server.
-   *
+   * <p>
    * Otherwise, `null` is returned.
+   *
    * @param player The player to examine
    * @return {@code null} if not running on the server, otherwise the player's additional hotbars.
    */

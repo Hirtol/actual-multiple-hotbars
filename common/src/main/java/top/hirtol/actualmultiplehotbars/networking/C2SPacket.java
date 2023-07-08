@@ -13,8 +13,8 @@ public interface C2SPacket extends BasePacket {
   /**
    * Handle the new packet on the server
    *
-   * @param server         The current server
-   * @param serverPlayer   The player who sent the packet to the server
+   * @param server       The current server
+   * @param serverPlayer The player who sent the packet to the server
    */
   void handle(MinecraftServer server, ServerPlayerEntity serverPlayer);
 

@@ -8,14 +8,13 @@ import net.minecraft.util.collection.DefaultedList;
 
 /**
  * A simple {@code Inventory} implementation with only default methods + an item list getter.
- *
+ * <p>
  * Originally by Juuz
  */
 public interface ImplementedInventory extends Inventory {
 
   /**
-   * Retrieves the item list of this inventory.
-   * Must return the same instance every time it's called.
+   * Retrieves the item list of this inventory. Must return the same instance every time it's called.
    */
   DefaultedList<ItemStack> getItems();
 
@@ -43,6 +42,7 @@ public interface ImplementedInventory extends Inventory {
 
   /**
    * Checks if the inventory is empty.
+   *
    * @return true if this inventory has only empty stacks, false otherwise.
    */
   @Override
@@ -66,9 +66,10 @@ public interface ImplementedInventory extends Inventory {
 
   /**
    * Removes items from an inventory slot.
+   *
    * @param slot  The slot to remove from.
-   * @param count How many items to remove. If there are less items in the slot than what are requested,
-   *              takes all items in that slot.
+   * @param count How many items to remove. If there are less items in the slot than what are requested, takes all items
+   *              in that slot.
    */
   @Override
   default ItemStack removeStack(int slot, int count) {
@@ -81,6 +82,7 @@ public interface ImplementedInventory extends Inventory {
 
   /**
    * Removes all items from an inventory slot.
+   *
    * @param slot The slot to remove from.
    */
   @Override
@@ -90,10 +92,10 @@ public interface ImplementedInventory extends Inventory {
 
   /**
    * Replaces the current stack in an inventory slot with the provided stack.
+   *
    * @param slot  The inventory slot of which to replace the itemstack.
-   * @param stack The replacing itemstack. If the stack is too big for
-   *              this inventory ({@link Inventory#getMaxCountPerStack()}),
-   *              it gets resized to this inventory's maximum amount.
+   * @param stack The replacing itemstack. If the stack is too big for this inventory
+   *              ({@link Inventory#getMaxCountPerStack()}), it gets resized to this inventory's maximum amount.
    */
   @Override
   default void setStack(int slot, ItemStack stack) {
@@ -112,9 +114,8 @@ public interface ImplementedInventory extends Inventory {
   }
 
   /**
-   * Marks the state as dirty.
-   * Must be called after changes in the inventory, so that the game can properly save
-   * the inventory contents and notify neighboring blocks of inventory changes.
+   * Marks the state as dirty. Must be called after changes in the inventory, so that the game can properly save the
+   * inventory contents and notify neighboring blocks of inventory changes.
    */
   @Override
   default void markDirty() {
@@ -131,7 +132,9 @@ public interface ImplementedInventory extends Inventory {
 
   default int getEmptySlot() {
     for (int i = 0; i < this.getItems().size(); ++i) {
-      if (!this.getItems().get(i).isEmpty()) continue;
+      if (!this.getItems().get(i).isEmpty()) {
+        continue;
+      }
       return i;
     }
     return -1;

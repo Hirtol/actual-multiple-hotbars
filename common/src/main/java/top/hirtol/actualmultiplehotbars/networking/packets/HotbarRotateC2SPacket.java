@@ -12,7 +12,7 @@ import top.hirtol.actualmultiplehotbars.networking.C2SPacket;
 
 public class HotbarRotateC2SPacket implements C2SPacket {
 
-  public static final Identifier ID = new Identifier(ActualHotbars.MOD_ID, "external_hotbar_rotate");
+  public static final Identifier ID = ActualHotbars.ID("external_hotbar_rotate");
   private static final Logger logger = LoggerFactory.getLogger(HotbarRotateC2SPacket.class);
 
   public int maxRotateIndexIncl;

@@ -15,9 +15,9 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
-import top.hirtol.actualmultiplehotbars.inventory.ServerInventoryManager;
 import top.hirtol.actualmultiplehotbars.client.AMHClientState;
 import top.hirtol.actualmultiplehotbars.config.AMHConfig;
+import top.hirtol.actualmultiplehotbars.inventory.ServerInventoryManager;
 
 @Mixin(PlayerInventory.class)
 public abstract class PlayerInventoryMixin {

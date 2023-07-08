@@ -4,9 +4,9 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import top.hirtol.actualmultiplehotbars.client.AMHClientState;
 import top.hirtol.actualmultiplehotbars.client.ConfigSyncManager;
 import top.hirtol.actualmultiplehotbars.client.KeyManager;
-import top.hirtol.actualmultiplehotbars.client.AMHClientState;
 import top.hirtol.actualmultiplehotbars.networking.PacketRegistry;
 import top.hirtol.actualmultiplehotbars.screenhandlers.ScreenHandlers;
 

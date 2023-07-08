@@ -5,14 +5,14 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import top.hirtol.actualmultiplehotbars.config.AMHConfigData.ServerSettings;
-import top.hirtol.actualmultiplehotbars.config.AMHConfig;
 import top.hirtol.actualmultiplehotbars.ActualHotbars;
+import top.hirtol.actualmultiplehotbars.config.AMHConfig;
+import top.hirtol.actualmultiplehotbars.config.AMHConfigData.ServerSettings;
 import top.hirtol.actualmultiplehotbars.networking.S2CPacket;
 
 public class SyncS2CConfigPacket implements S2CPacket {
 
-  public static final Identifier ID = Identifier.of(ActualHotbars.MOD_ID, "config_sync");
+  public static final Identifier ID = ActualHotbars.ID("config_sync");
   private static final Logger logger = LoggerFactory.getLogger(SyncS2CConfigPacket.class);
 
   private final ServerSettings config;

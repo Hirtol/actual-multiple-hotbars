@@ -12,18 +12,18 @@ import top.hirtol.actualmultiplehotbars.networking.C2SPacket;
 
 public class HotbarSetVirtualC2SPacket implements C2SPacket {
 
-  public static final Identifier ID = new Identifier(ActualHotbars.MOD_ID, "external_hotbar_swap");
+  public static final Identifier ID = ActualHotbars.ID("external_hotbar_swap");
   private static final Logger logger = LoggerFactory.getLogger(HotbarSetVirtualC2SPacket.class);
 
   public int virtualIndex;
   public int visualIndex;
 
   /**
-   * Link the given visual hotbar with the behind-the-scenes virtual hotbar.
-   * If the `visualIndex` equals {@code MAIN_HOTBAR_INDEX} then the physical hotbars are swapped so that the player
-   * holds the items of the new virtual hotbar.
+   * Link the given visual hotbar with the behind-the-scenes virtual hotbar. If the `visualIndex` equals
+   * {@code MAIN_HOTBAR_INDEX} then the physical hotbars are swapped so that the player holds the items of the new
+   * virtual hotbar.
    *
-   * @param visualIndex 0 represents the main hotbar
+   * @param visualIndex  0 represents the main hotbar
    * @param virtualIndex 0 represents the initial main hotbar's contents.
    */
   public HotbarSetVirtualC2SPacket(int visualIndex, int virtualIndex) {

@@ -12,7 +12,7 @@ import top.hirtol.actualmultiplehotbars.networking.C2SPacket;
 
 public class ResetVisualC2SPacket implements C2SPacket {
 
-  public static final Identifier ID = new Identifier(ActualHotbars.MOD_ID, "reset_visual_hotbar");
+  public static final Identifier ID = ActualHotbars.ID("reset_visual_hotbar");
   private static final Logger logger = LoggerFactory.getLogger(ResetVisualC2SPacket.class);
 
   @Override

@@ -15,7 +15,8 @@ public class HotbarInventory implements ImplementedInventory {
 
   public HotbarInventory() {
     this(DefaultedList.ofSize(
-        AMHConfig.getInstance().getAdditionalHotbars() * 9, ItemStack.EMPTY), new PlayerHotbarState(1 + AMHConfig.getInstance().getAdditionalHotbars()));
+            AMHConfig.getInstance().getAdditionalHotbars() * 9, ItemStack.EMPTY),
+        new PlayerHotbarState(1 + AMHConfig.getInstance().getAdditionalHotbars()));
   }
 
   public HotbarInventory(DefaultedList<ItemStack> items, PlayerHotbarState state) {
@@ -81,13 +82,17 @@ public class HotbarInventory implements ImplementedInventory {
 
   public int getOccupiedSlotWithRoomForStack(ItemStack stack) {
     for (int i = 0; i < this.items.size(); ++i) {
-      if (!this.canStackAddMore(this.items.get(i), stack)) continue;
+      if (!this.canStackAddMore(this.items.get(i), stack)) {
+        continue;
+      }
       return i;
     }
     return -1;
   }
 
   private boolean canStackAddMore(ItemStack existingStack, ItemStack stack) {
-    return !existingStack.isEmpty() && ItemStack.canCombine(existingStack, stack) && existingStack.isStackable() && existingStack.getCount() < existingStack.getMaxCount() && existingStack.getCount() < this.getMaxCountPerStack();
+    return !existingStack.isEmpty() && ItemStack.canCombine(existingStack, stack) && existingStack.isStackable()
+           && existingStack.getCount() < existingStack.getMaxCount()
+           && existingStack.getCount() < this.getMaxCountPerStack();
   }
 }

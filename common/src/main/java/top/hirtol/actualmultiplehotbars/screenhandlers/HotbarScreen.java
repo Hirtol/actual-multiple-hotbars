@@ -12,8 +12,8 @@ import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import top.hirtol.actualmultiplehotbars.ActualHotbars;
-import top.hirtol.actualmultiplehotbars.client.KeyManager;
 import top.hirtol.actualmultiplehotbars.client.AMHClientState;
+import top.hirtol.actualmultiplehotbars.client.KeyManager;
 
 // GenericContainerScreen
 public class HotbarScreen extends HandledScreen<HotbarScreenHandler>

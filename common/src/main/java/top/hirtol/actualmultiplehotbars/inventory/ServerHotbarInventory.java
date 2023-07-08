@@ -87,11 +87,12 @@ public class ServerHotbarInventory extends HotbarInventory {
 
   /**
    * Rotate the given range of hotbars (from visual 0..=maxVisualIndexIncl).
+   * <p>
+   * Will only shift the physical items of the current equipped hotbar and the hotbar to-be equipped. The remainder are
+   * merely visual moves.
    *
-   * Will only shift the physical items of the current equipped hotbar and the hotbar to-be equipped.
-   * The remainder are merely visual moves.
    * @param maxVisualIndexIncl The max index of the Visual hotbars to rotate.
-   * @param reverse Whether to rotate in reverse or not
+   * @param reverse            Whether to rotate in reverse or not
    */
   public void rotateVisualHotbars(int maxVisualIndexIncl, boolean reverse) {
     if (maxVisualIndexIncl < 0 || maxVisualIndexIncl > this.getRowCount()) {

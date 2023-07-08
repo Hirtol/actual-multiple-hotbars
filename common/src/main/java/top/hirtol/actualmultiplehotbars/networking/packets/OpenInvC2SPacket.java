@@ -7,13 +7,13 @@ import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import top.hirtol.actualmultiplehotbars.ActualHotbars;
-import top.hirtol.actualmultiplehotbars.inventory.ServerInventoryManager;
 import top.hirtol.actualmultiplehotbars.inventory.ServerHotbarInventory;
+import top.hirtol.actualmultiplehotbars.inventory.ServerInventoryManager;
 import top.hirtol.actualmultiplehotbars.networking.C2SPacket;
 
 public class OpenInvC2SPacket implements C2SPacket {
 
-  public static final Identifier ID = new Identifier(ActualHotbars.MOD_ID, "special_action");
+  public static final Identifier ID = ActualHotbars.ID("special_action");
 
   private static final Logger logger = LoggerFactory.getLogger(OpenInvC2SPacket.class);
 

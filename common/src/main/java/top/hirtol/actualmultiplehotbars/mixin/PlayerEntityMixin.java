@@ -37,7 +37,8 @@ public abstract class PlayerEntityMixin {
       }
 
       var hotbarInv = ServerInventoryManager.getPlayerState(inventory.player);
-      logger.trace("Dropping additional hotbars for player {} at {}", inventory.player.getDisplayName().getString(), inventory.player.getBlockPos());
+      logger.trace("Dropping additional hotbars for player {} at {}", inventory.player.getDisplayName().getString(),
+          inventory.player.getBlockPos());
 
       for (int i = 0; i < hotbarInv.getItems().size(); ++i) {
         ItemStack itemStack = hotbarInv.getStack(i);

@@ -41,11 +41,10 @@ public class ActualHotbars {
       packet.send(player);
     });
 
-
     logger.info("Actual Multiple Hotbars has been initialised");
   }
 
   public static Identifier ID(String id) {
-    return new Identifier(ActualHotbars.MOD_ID, id);
+    return ActualHotbars.ID(id);
   }
 }

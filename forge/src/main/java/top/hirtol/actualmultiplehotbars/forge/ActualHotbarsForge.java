@@ -6,6 +6,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.ConfigGuiHandler.ConfigGuiFactory;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -35,5 +36,9 @@ public class ActualHotbarsForge {
     context.registerExtensionPoint(ConfigGuiFactory.class, () ->
         new ConfigGuiFactory(
             (minecraftClient, parent) -> AutoConfig.getConfigScreen(AMHConfigData.class, parent).get()));
+
+    if (ModList.get().isLoaded("the_vault")) {
+
+    }
   }
 }

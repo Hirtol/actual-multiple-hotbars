@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "top.hirtol.actualmultiplehotbars.forge.integrations.mixins",
+  "compatibilityLevel": "JAVA_17",
+  "minVersion": "0.8",
+  "client": [
+    "TheVaultRenderExpMixin"
+  ],
+  "mixins": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

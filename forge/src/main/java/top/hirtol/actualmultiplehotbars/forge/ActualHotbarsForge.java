@@ -3,7 +3,7 @@ package top.hirtol.actualmultiplehotbars.forge;
 import dev.architectury.platform.forge.EventBuses;
 import me.shedaniel.autoconfig.AutoConfig;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.ConfigScreenHandler.ConfigScreenFactory;
+import net.minecraftforge.client.ConfigGuiHandler.ConfigGuiFactory;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -32,8 +32,8 @@ public class ActualHotbarsForge {
       modBus.addListener(ActualHotbarsForgeClient::init);
     });
 
-    context.registerExtensionPoint(ConfigScreenFactory.class, () ->
-        new ConfigScreenFactory(
+    context.registerExtensionPoint(ConfigGuiFactory.class, () ->
+        new ConfigGuiFactory(
             (minecraftClient, parent) -> AutoConfig.getConfigScreen(AMHConfigData.class, parent).get()));
   }
 }

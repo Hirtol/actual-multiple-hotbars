@@ -4,7 +4,7 @@ package top.hirtol.actualmultiplehotbars.forge.mixin;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.gui.overlay.ForgeGui;
+import net.minecraftforge.client.gui.ForgeIngameGui;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.spongepowered.asm.mixin.Mixin;
@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import top.hirtol.actualmultiplehotbars.config.AMHConfig;
 
 @OnlyIn(Dist.CLIENT)
-@Mixin(ForgeGui.class)
+@Mixin(ForgeIngameGui.class)
 public abstract class ForgeGuiMixin {
 
   private static final Logger logger = LoggerFactory.getLogger(ForgeGuiMixin.class);

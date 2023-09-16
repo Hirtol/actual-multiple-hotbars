@@ -4,7 +4,7 @@ import dev.architectury.registry.menu.MenuRegistry;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.SimpleNamedScreenHandlerFactory;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.collection.DefaultedList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,7 +41,7 @@ public class ServerHotbarInventory extends HotbarInventory {
   public void openHandledScreen(ServerPlayerEntity player) {
     var newScreen = new SimpleNamedScreenHandlerFactory(
         (syncId, inv, openPlayer) -> ScreenHandlers.createHotbarScreen(syncId, inv, this),
-        Text.translatable("screen.actualmultiplehotbars.ui.title"));
+        new TranslatableText("screen.actualmultiplehotbars.ui.title"));
     MenuRegistry.openMenu(player, newScreen);
   }
 

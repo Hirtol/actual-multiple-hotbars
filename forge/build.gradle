@@ -38,7 +38,9 @@ dependencies {
     modApi "dev.architectury:architectury-forge:${rootProject.architectury_version}"
     modApi("me.shedaniel.cloth:cloth-config-forge:${rootProject.clothconfig_version}")
 
-    modImplementation ("curse.maven:vault-458203:4746774")
+    // The_Vault compatibility, we don't want it as a hard dependency.
+    modCompileOnly ("curse.maven:vault-458203:4746774")
+
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
 }

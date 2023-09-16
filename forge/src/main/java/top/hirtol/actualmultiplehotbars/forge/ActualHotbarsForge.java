@@ -36,9 +36,5 @@ public class ActualHotbarsForge {
     context.registerExtensionPoint(ConfigGuiFactory.class, () ->
         new ConfigGuiFactory(
             (minecraftClient, parent) -> AutoConfig.getConfigScreen(AMHConfigData.class, parent).get()));
-
-    if (ModList.get().isLoaded("the_vault")) {
-
-    }
   }
 }

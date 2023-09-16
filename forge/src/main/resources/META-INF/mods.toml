@@ -40,3 +40,10 @@ mandatory = true
 versionRange = "[4.0.29,)"
 ordering = "AFTER"
 side = "BOTH"
+
+[[dependencies.actualmultiplehotbars]]
+modId = "the_vault"
+mandatory = false
+versionRange = "[1.0,)"
+ordering = "AFTER"
+side = "CLIENT"

@@ -45,6 +45,6 @@ public class ActualHotbars {
   }
 
   public static Identifier ID(String id) {
-    return ActualHotbars.ID(id);
+    return new Identifier(ActualHotbars.MOD_ID, id);
   }
 }

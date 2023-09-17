@@ -32,9 +32,20 @@ public abstract class PlayerInventoryMixin {
   public int selectedSlot;
 
   @Inject(method = "addStack(Lnet/minecraft/item/ItemStack;)I",
+      at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getCount()I"),
+      locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
+  private void preferExtraHotbarPickupNoSpace(ItemStack stack, CallbackInfoReturnable<Integer> cir, int i) {
+    preferExtraHotbarPickupImpl(stack, cir, i);
+  }
+
+  @Inject(method = "addStack(Lnet/minecraft/item/ItemStack;)I",
       at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerInventory;addStack(ILnet/minecraft/item/ItemStack;)I"),
       locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
   private void preferExtraHotbarPickup(ItemStack stack, CallbackInfoReturnable<Integer> cir, int i) {
+    preferExtraHotbarPickupImpl(stack, cir, i);
+  }
+
+  private void preferExtraHotbarPickupImpl(ItemStack stack, CallbackInfoReturnable<Integer> cir, int i) {
     var config = AMHConfig.getInstance();
     var hotbar = ServerInventoryManager.getPlayerState(player);
 
@@ -46,16 +57,13 @@ public abstract class PlayerInventoryMixin {
       }
 
       var slot = hotbar.getOccupiedSlotWithRoomForStack(stack);
+      if (slot == -1 && config.allowFillingEmptyAdditional()) {
+        slot = hotbar.getEmptySlot();
+      }
 
       if (slot != -1) {
         cir.setReturnValue(hotbar.addStackTillMax(slot, stack));
         hotbar.markDirty();
-      } else if (config.allowFillingEmptyAdditional()) {
-        slot = hotbar.getEmptySlot();
-        if (slot != -1) {
-          cir.setReturnValue(hotbar.addStackTillMax(slot, stack));
-          hotbar.markDirty();
-        }
       }
     }
   }

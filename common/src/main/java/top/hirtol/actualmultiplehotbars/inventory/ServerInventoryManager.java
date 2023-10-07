@@ -49,7 +49,7 @@ public class ServerInventoryManager extends PersistentState {
       NbtCompound historicTag = tag.getCompound("historicInventories");
       historicTag.getKeys().forEach(key -> {
         UUID uuid = UUID.fromString(key);
-        serverState.historicInventories.put(uuid, tag.getCompound(key));
+        serverState.historicInventories.put(uuid, historicTag.getCompound(key));
       });
     }
 
@@ -89,6 +89,25 @@ public class ServerInventoryManager extends PersistentState {
 
       state.historicInventories.put(player.getUuid(), playerStateNbt);
     }
+  }
+
+  public static boolean restoreHistoricInventory(PlayerEntity player) {
+    if (player.world.getServer() != null) {
+      ServerInventoryManager state = getManager(player.world.getServer());
+      HotbarInventory historicInventory = new HotbarInventory();
+
+      if (state.historicInventories.containsKey(player.getUuid())) {
+        NbtCompound historic = state.historicInventories.get(player.getUuid());
+        historicInventory.readNbt(historic);
+        state.players.put(player.getUuid(), historicInventory);
+        // Send the new updated state to the player.
+        historicInventory.markDirty();
+
+        return true;
+      }
+    }
+
+    return false;
   }
 
   private static NbtCompound createHashNbt(HashMap<UUID, HotbarInventory> state) {

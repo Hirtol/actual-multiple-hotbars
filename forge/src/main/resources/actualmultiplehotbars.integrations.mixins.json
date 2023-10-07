@@ -8,6 +8,7 @@
     "TheVaultRenderExpMixin"
   ],
   "mixins": [
+    "TheVaultInterceptItemMixin"
   ],
   "injectors": {
     "defaultRequire": 1

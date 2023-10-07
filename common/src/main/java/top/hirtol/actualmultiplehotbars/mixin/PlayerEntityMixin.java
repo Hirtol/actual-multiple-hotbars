@@ -14,6 +14,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import top.hirtol.actualmultiplehotbars.inventory.HotbarInventory;
 import top.hirtol.actualmultiplehotbars.inventory.ServerInventoryManager;
 
 @Mixin(PlayerEntity.class)
@@ -35,8 +36,10 @@ public abstract class PlayerEntityMixin {
       if (inventory.player.world.getGameRules().getBoolean(GameRules.KEEP_INVENTORY)) {
         return;
       }
+      // Save the current state
+      ServerInventoryManager.persistHistoricInventory(inventory.player);
 
-      var hotbarInv = ServerInventoryManager.getPlayerState(inventory.player);
+      HotbarInventory hotbarInv = ServerInventoryManager.getPlayerState(inventory.player);
       logger.trace("Dropping additional hotbars for player {} at {}", inventory.player.getDisplayName().getString(),
           inventory.player.getBlockPos());
 

@@ -22,6 +22,7 @@ public class ActualHotbars {
     AMHConfig.init();
     PacketRegistry.initialiseServer();
     ScreenHandlers.init();
+    CommandHandler.init();
 
     PlayerEvent.PLAYER_JOIN.register(player -> {
       // Keep config in-sync. WARNING -> This currently leaks memory, has to be a better way of doing this

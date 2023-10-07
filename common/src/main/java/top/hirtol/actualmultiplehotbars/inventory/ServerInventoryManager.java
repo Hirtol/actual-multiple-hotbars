@@ -101,7 +101,7 @@ public class ServerInventoryManager extends PersistentState {
         historicInventory.readNbt(historic);
         state.players.put(player.getUuid(), historicInventory);
         // Send the new updated state to the player.
-        historicInventory.markDirty();
+        getPlayerState(player).markDirty();
 
         return true;
       }

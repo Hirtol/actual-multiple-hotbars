@@ -37,5 +37,7 @@
   "text.autoconfig.actualmultiplehotbars.option.client.secondaryEquipKey.@Tooltip[0]": "When this modifier key is pressed alongside '1', '2', '3', etc",
   "text.autoconfig.actualmultiplehotbars.option.client.secondaryEquipKey.@Tooltip[1]": "then the secondary hotbar is equipped and the slot corresponding to the number key is selected",
 
+  "text.autoconfig.actualmultiplehotbars.cmd.restore.success":"Successfully restored most recent hotbar state for ",
+  "text.autoconfig.actualmultiplehotbars.cmd.restore.fail":"Failed to restore most recent hotbar for ",
   "text.autoconfig.actualmultiplehotbars.title":"Actual Multiple Hotbars Config"
 }

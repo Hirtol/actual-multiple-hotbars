@@ -7,9 +7,9 @@ import dev.architectury.event.events.common.CommandRegistrationEvent;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Style;
+import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import top.hirtol.actualmultiplehotbars.inventory.ServerInventoryManager;
 
@@ -26,11 +26,11 @@ public class CommandHandler {
 
   private static int restoreHotbars(ServerCommandSource source, ServerPlayerEntity entity) {
     if (ServerInventoryManager.restoreHistoricInventory(entity)) {
-      MutableText text = new LiteralText("Successfully restored most recent hotbar state for ").append(entity.getName());
+      MutableText text = Text.translatable("text.autoconfig.actualmultiplehotbars.cmd.restore.success").append(entity.getName());
       text.setStyle(Style.EMPTY.withColor(Formatting.GREEN));
       source.sendFeedback(text, false);
     } else {
-      MutableText text = new LiteralText("Failed to restore hotbar for ").append(entity.getName());
+      MutableText text = Text.translatable("text.autoconfig.actualmultiplehotbars.cmd.restore.fail").append(entity.getName());
       text.setStyle(Style.EMPTY.withColor(Formatting.RED));
       source.sendFeedback(text, false);
     }

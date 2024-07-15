@@ -16,7 +16,7 @@ import top.hirtol.actualmultiplehotbars.inventory.ServerInventoryManager;
 public class CommandHandler {
 
   public static void init() {
-    CommandRegistrationEvent.EVENT.register(((dispatcher, selection) -> dispatcher.register(
+    CommandRegistrationEvent.EVENT.register(((dispatcher, selection, other) -> dispatcher.register(
         literal("amh")
             .requires(src -> src.hasPermissionLevel(4))
             .then(literal("restore").then(argument("player", EntityArgumentType.players())
